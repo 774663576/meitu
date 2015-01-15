@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:paddingTop="10dip" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dip"
+        android:layout_marginRight="50dip"
+        android:background="@drawable/growth_item" >
+
+        <com.meitu.view.RoundAngleImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_marginLeft="7dip"
+            android:layout_marginTop="7dip"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_avatar" />
+
+        <TextView
+            android:id="@+id/txt_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/img_avatar"
+            android:singleLine="true"
+            android:text="舒淇"
+            android:textColor="#485355"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_user_name"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@+id/img_avatar"
+            android:gravity="center"
+            android:paddingTop="2dip"
+            android:text="2014"
+            android:textColor="@color/gray"
+            android:textSize="10sp" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_below="@+id/img_avatar"
+            android:layout_marginTop="10dip"
+            android:background="#d5d5d5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txt_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="8dip"
+                android:text="无病呻吟"
+                android:textColor="#666666"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="300dip"
+                android:layout_height="300dip"
+                android:layout_gravity="left"
+                android:adjustViewBounds="true"
+                android:maxHeight="200dip"
+                android:maxWidth="200dip"
+                android:scaleType="fitXY"
+                android:visibility="gone" />
+
+            <com.meitu.view.ExpandGridView
+                android:id="@+id/imgGridview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dip"
+                android:horizontalSpacing="2dip"
+                android:listSelector="#00000000"
+                android:scrollbars="none"
+                android:verticalSpacing="2dip"
+                android:visibility="visible" >
+            </com.meitu.view.ExpandGridView>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dip"
+                android:background="#d5d5d5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.meitu.view.DrawableCenterTextView
+                    android:id="@+id/btn_prise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/praise_img_nomal"
+                    android:drawablePadding="3dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dip"
+                    android:paddingTop="8dip"
+                    android:text="赞(1)"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="match_parent"
+                    android:background="#d5d5d5" />
+
+                <com.meitu.view.DrawableCenterTextView
+                    android:id="@+id/btn_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_share"
+                    android:drawablePadding="3dip"
+                    android:paddingBottom="8dip"
+                    android:paddingTop="8dip"
+                    android:text="分享"
+                    android:textColor="@color/gray"
+                    android:textSize="10sp" />
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="match_parent"
+                    android:background="#d5d5d5" />
+
+                <com.meitu.view.DrawableCenterTextView
+                    android:id="@+id/btn_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_comment"
+                    android:drawablePadding="3dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dip"
+                    android:paddingTop="8dip"
+                    android:text="回复"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
