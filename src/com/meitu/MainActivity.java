@@ -1,16 +1,25 @@
 package com.meitu;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.meitu.adapter.GrowthAdapter;
+import com.meitu.adapter.ArticleAdapter;
+import com.meitu.data.Article;
+import com.meitu.utils.DateUtils;
+import com.meitu.utils.SharedUtils;
 import com.meitu.view.PullDownView;
 import com.meitu.view.PullDownView.OnPullDownListener;
 
@@ -22,7 +31,9 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	private ListView mListView;
 	public DrawerLayout drawerLayout;// ²à±ßÀ¸²¼¾Ö
 
-	private GrowthAdapter adapter;
+	private ArticleAdapter adapter;
+
+	private List<Article> lists = new ArrayList<Article>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	}
 
 	private void setValue() {
-		adapter = new GrowthAdapter(this);
+		adapter = new ArticleAdapter(this, lists);
 		mListView.setAdapter(adapter);
 		mPullDownView.addFooterView();
 
@@ -83,11 +94,29 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 
 	@Override
 	public void onRefresh() {
-
+		mPullDownView.RefreshComplete();
 	}
 
 	@Override
 	public void onMore() {
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 200) {
+			if (data == null) {
+				return;
+			}
+			Article article = (Article) data.getSerializableExtra("article");
+			article.setPublisher_id(SharedUtils.getIntUid());
+			article.setPublished(DateUtils.getGrowthShowTime());
+			article.setPublisher_avatar(SharedUtils.getAPPUserAvatar());
+			article.setPublisher_name(SharedUtils.getAPPUserName());
+			lists.add(0, article);
+			adapter.notifyDataSetChanged();
+
+		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.meitu.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.meitu.PublicshActivity;
 import com.meitu.R;
+import com.meitu.utils.Utils;
 
 public class DrawerLeftMenu extends FrameLayout implements OnClickListener {
 	private Context mContext;
@@ -18,21 +22,21 @@ public class DrawerLeftMenu extends FrameLayout implements OnClickListener {
 	private ImageView img_avatar;
 	private TextView txt_user_name;
 	private LinearLayout layotu_parent;
-	private TextView txt_message;
+	private TextView txt_publish;
 	private TextView txt_user_info;
 	private TextView txt_setting;
 
 	public DrawerLeftMenu(Context context) {
 		super(context);
 		mContext = context;
-		 initView();
+		initView();
 		// setValue();
 	}
 
 	public DrawerLeftMenu(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		 initView();
+		initView();
 		// setValue();
 
 	}
@@ -63,11 +67,11 @@ public class DrawerLeftMenu extends FrameLayout implements OnClickListener {
 		txt_user_name.getBackground().setAlpha(120);
 		layotu_parent = (LinearLayout) rootView
 				.findViewById(R.id.layout_parent);
-		txt_message = (TextView) rootView.findViewById(R.id.txt_message);
+		txt_publish = (TextView) rootView.findViewById(R.id.txt_publish);
 		txt_user_info = (TextView) rootView.findViewById(R.id.txt_user_info);
 		txt_setting = (TextView) rootView.findViewById(R.id.txt_seting);
 		layotu_parent.setOnClickListener(this);
-		txt_message.setOnClickListener(this);
+		txt_publish.setOnClickListener(this);
 		txt_user_info.setOnClickListener(this);
 		txt_setting.setOnClickListener(this);
 		img_avatar.setOnClickListener(this);
@@ -127,35 +131,36 @@ public class DrawerLeftMenu extends FrameLayout implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// Intent intent;
-		// switch (v.getId()) {
-		// case R.id.txt_message:
-		// mContext.startActivity(new Intent(mContext,
-		// ChatAllHistoryActivity.class));
-		// break;
-		// case R.id.txt_user_info:
-		// intent = new Intent();
-		// intent.putExtra("circle_member", MyApplation.getMemberSelf());
-		// intent.setClass(mContext, CircleMemberOfSelfInfoActivity.class);
-		// mContext.startActivity(intent);
-		// break;
-		// case R.id.txt_seting:
-		// mContext.startActivity(new Intent(mContext, SettingActivity.class));
-		// break;
-		// case R.id.img_avatar:
-		// List<String> imgUrl = new ArrayList<String>();
-		// imgUrl.add(SharedUtils.getAPPUserAvatar());
-		// intent = new Intent(mContext, ImagePagerActivity.class);
-		// Bundle bundle = new Bundle();
-		// bundle.putSerializable(Constants.EXTRA_IMAGE_URLS,
-		// (Serializable) imgUrl);
-		// intent.putExtras(bundle);
-		// intent.putExtra(Constants.EXTRA_IMAGE_INDEX, 1);
-		// mContext.startActivity(intent);
-		// break;
-		// default:
-		// break;
-		// }
-		// Utils.leftOutRightIn(mContext);
+		Intent intent;
+		switch (v.getId()) {
+		case R.id.txt_publish:
+			((Activity) mContext).startActivityForResult(new Intent(mContext,
+					PublicshActivity.class), 200);
+			break;
+		case R.id.txt_user_info:
+			// intent = new Intent();
+			// intent.putExtra("circle_member", MyApplation.getMemberSelf());
+			// intent.setClass(mContext, CircleMemberOfSelfInfoActivity.class);
+			// mContext.startActivity(intent);
+			break;
+		case R.id.txt_seting:
+			// mContext.startActivity(new Intent(mContext,
+			// SettingActivity.class));
+			break;
+		case R.id.img_avatar:
+			// List<String> imgUrl = new ArrayList<String>();
+			// imgUrl.add(SharedUtils.getAPPUserAvatar());
+			// intent = new Intent(mContext, ImagePagerActivity.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putSerializable(Constants.EXTRA_IMAGE_URLS,
+			// (Serializable) imgUrl);
+			// intent.putExtras(bundle);
+			// intent.putExtra(Constants.EXTRA_IMAGE_INDEX, 1);
+			// mContext.startActivity(intent);
+			break;
+		default:
+			break;
+		}
+		Utils.leftOutRightIn(mContext);
 	}
 }

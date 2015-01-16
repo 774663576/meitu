@@ -1,2 +1,11 @@
 eclipse.preferences.version=1
+encoding//src/com/meitu/chooseimage=UTF-8
+encoding//src/com/meitu/chooseimage/PhotoFragment.java=gbk
+encoding//src/com/meitu/showbigpic=UTF-8
+encoding//src/com/meitu/utils/BitmapUtils.java=UTF-8
+encoding//src/com/meitu/utils/FileUtils.java=UTF-8
+encoding//src/com/meitu/utils/PhotoUtils.java=UTF-8
+encoding//src/com/meitu/utils/StringUtils.java=UTF-8
+encoding//src/com/meitu/view/HackyViewPager.java=UTF-8
+encoding//src/com/meitu/view/MyEditTextDeleteImg.java=UTF-8
 encoding//src/com/meitu/view/PullDownView.java=UTF-8

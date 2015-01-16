@@ -28,8 +28,8 @@ public class CheckImageLoaderConfiguration {
 					.denyCacheImageMultipleSizesInMemory()
 					.discCacheFileNameGenerator(new Md5FileNameGenerator())
 					.discCache(
-							new LimitedAgeDiscCache(StorageUtils
-									.getCacheDirectory(context),
+							new LimitedAgeDiscCache(FileUtils
+									.getImageCachePath(),
 									new Md5FileNameGenerator(),
 									discCacheLimitTime))
 					.tasksProcessingOrder(QueueProcessingType.LIFO).build();

@@ -2,6 +2,22 @@
 <resources>
 
     <string name="app_name">MeiTu</string>
+    <string name="input_phone_num">请输入手机号</string>
+    <string name="next_step">下一步</string>
+    <string name="inupt_user_name">请输入昵称</string>
+    <string name="inupt_telephone">请输入手机号码</string>
+    <string name="inupt_password">请输入密码</string>
+    <string name="inupt_again_password">请再一次输入密码</string>
+    <string name="take_photo">拍照</string>
+    <string name="from_photo_album">从相册选择</string>
+    <string name="finished">完成</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_create_circle">CreateCircleActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="is_delete">是否删除这张照片？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
     <string name="loading">加载中...</string>
     <string name="pull_refresh">下拉刷新</string>
     <string name="last_refresh">上次更新</string>
