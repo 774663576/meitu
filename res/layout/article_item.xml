@@ -80,7 +80,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="200dip"
                 android:maxWidth="200dip"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:visibility="gone" />
 
             <com.meitu.view.ExpandGridView
@@ -134,8 +134,8 @@
                     android:paddingBottom="8dip"
                     android:paddingTop="8dip"
                     android:text="分享"
-                    android:textColor="@color/gray"
-                    android:textSize="10sp" />
+                   android:textColor="@color/gray"
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="0.5dip"

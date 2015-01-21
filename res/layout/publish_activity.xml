@@ -26,11 +26,9 @@
                 android:id="@+id/imgGridview"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:horizontalSpacing="3dip"
                 android:listSelector="#00000000"
                 android:numColumns="4"
-                android:scrollbars="none"
-                android:verticalSpacing="3dip" >
+                android:scrollbars="none" >
             </com.meitu.view.ExpandGridView>
 
             <EditText
@@ -40,7 +38,7 @@
                 android:layout_marginTop="10dip"
                 android:background="@drawable/comment_edit"
                 android:gravity="top"
-                android:hint="说点什么吧"
+                android:hint="写下那些触动你心灵的文字"
                 android:maxLength="999"
                 android:minHeight="100dip"
                 android:padding="10dip"

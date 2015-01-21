@@ -116,6 +116,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 			article.setPublisher_name(SharedUtils.getAPPUserName());
 			lists.add(0, article);
 			adapter.notifyDataSetChanged();
+			mListView.setSelection(0);
 
 		}
 	}
