@@ -12,15 +12,10 @@ import com.meitu.parser.SimpleParser;
 import com.meitu.utils.BitmapUtils;
 
 public class User {
-	private static final String VERIFY_CELLPHONE_API = "VerifyCellPhoneServlet";
-	private static final String USER_REGISTER_API = "UserRegisterServlet";
-	private static final String USER_LOGIN_API = "UserLoginServlet";
-	private static final String GET_USER_INFO = "GetUserInfoServlet";
-	private static final String FIND_PASSWORD_VERIFY_CODE = "FindPasswordGetVerifyCode";
-	private static final String UPDATE_USER_LOGIN_PASSWORD = "UpdateUserLoginPassword";
-	private static final String CHECK_VERIFY_CODE = "CheckVerifyCodeServlet";
+	private static final String USER_REGISTER_API = "/register.do";
+	private static final String VERIFY_CELLPHONE_API = "/checkoutMobilNum.do";
 
-	private String user_cellphone = "";// 用户注册电话
+	private String user_phone = "";// 用户注册电话
 	private String user_name = "";// 用户注册姓名
 	private String user_avatar = "";// 用户注册头像
 	private String user_gender = "";// 用户注册性别
@@ -36,16 +31,16 @@ public class User {
 		this.user_id = user_id;
 	}
 
-	public String getUser_cellphone() {
-		return user_cellphone;
-	}
-
-	public void setUser_cellphone(String user_cellphone) {
-		this.user_cellphone = user_cellphone;
-	}
-
 	public String getUser_name() {
 		return user_name;
+	}
+
+	public String getUser_phone() {
+		return user_phone;
+	}
+
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
 	}
 
 	public void setUser_name(String user_name) {
@@ -92,21 +87,8 @@ public class User {
 	public RetError vefifyCellPhone() {
 		IParser parser = new SimpleParser();
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("user_cellphone", user_cellphone);
+		params.put("user_phone", user_phone);
 		Result ret = ApiRequest.request(VERIFY_CELLPHONE_API, params, parser);
-		if (ret.getStatus() == RetStatus.SUCC) {
-			return RetError.NONE;
-		} else {
-			return ret.getErr();
-		}
-	}
-
-	public RetError getFindPasswordVerifyCode() {
-		IParser parser = new SimpleParser();
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("user_cellphone", user_cellphone);
-		Result ret = ApiRequest.request(FIND_PASSWORD_VERIFY_CODE, params,
-				parser);
 		if (ret.getStatus() == RetStatus.SUCC) {
 			return RetError.NONE;
 		} else {
@@ -123,7 +105,7 @@ public class User {
 		IParser parser = new SimpleParser();
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("user_name", user_name);
-		params.put("user_cellphone", user_cellphone);
+		params.put("user_phone", user_phone);
 		params.put("user_password", user_password);
 		params.put("user_gender", user_gender);
 		params.put("user_birthday", user_birthday);
@@ -138,58 +120,4 @@ public class User {
 
 	}
 
-	public RetError updateUserLoginPassword() {
-		IParser parser = new SimpleParser();
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("user_password", user_password);
-		params.put("cell_phone", user_cellphone);
-		Result ret = ApiRequest.request(UPDATE_USER_LOGIN_PASSWORD, params,
-				parser);
-		if (ret.getStatus() == RetStatus.SUCC) {
-			return RetError.NONE;
-		} else {
-			return ret.getErr();
-		}
-	}
-
-	/**
-	 * 用户 登录
-	 * 
-	 * @return
-	 */
-
-	//
-	// public RetError userLogin() {
-	// IParser parser = new MemberSelfPaser();
-	// HashMap<String, Object> params = new HashMap<String, Object>();
-	// params.put("user_cellphone", user_cellphone);
-	// params.put("user_password", user_password);
-	// Result ret = ApiRequest.request(USER_LOGIN_API, params, parser);
-	// if (ret.getStatus() == RetStatus.SUCC) {
-	// StringResult sr = (StringResult) ret;
-	// this.user_id = Integer.valueOf(sr.getStr());
-	// return RetError.NONE;
-	// } else {
-	// return ret.getErr();
-	// }
-
-	// }
-
-	/**
-	 * 验证验证码是否正确
-	 * 
-	 * @param code
-	 */
-	public RetError checkVerifyCode(String code) {
-		IParser parser = new SimpleParser();
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("user_cellphone", user_cellphone);
-		params.put("sms_code", code);
-		Result ret = ApiRequest.request(CHECK_VERIFY_CODE, params, parser);
-		if (ret.getStatus() == RetStatus.SUCC) {
-			return RetError.NONE;
-		} else {
-			return ret.getErr();
-		}
-	}
 }

@@ -2,7 +2,6 @@ package com.meitu.utils;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -40,6 +39,11 @@ public class DialogUtil {
 				LinearLayout.LayoutParams.MATCH_PARENT));// …Ë÷√≤ºæ÷
 
 		return loadingDialog;
+
+	}
+
+	public static Dialog createLoadingDialog(Context context) {
+		return createLoadingDialog(context, "«Î…‘∫Ú");
 
 	}
 

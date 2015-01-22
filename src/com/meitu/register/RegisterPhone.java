@@ -48,7 +48,7 @@ public class RegisterPhone extends RegisterStep implements OnClickListener,
 
 	private void verifyCellPhone(final String phone) {
 		User re = new User();
-		re.setUser_cellphone(phone);
+		re.setUser_phone(phone);
 		VerifyCellPhoneTask task = new VerifyCellPhoneTask();
 		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
 			@Override
@@ -57,7 +57,7 @@ public class RegisterPhone extends RegisterStep implements OnClickListener,
 				if (result != RetError.NONE) {
 					return;
 				}
-				mActivity.getmRegister().setUser_cellphone(phone);
+				mActivity.getmRegister().setUser_phone(phone);
 				mOnNextListener.next();
 			}
 		});
@@ -74,13 +74,10 @@ public class RegisterPhone extends RegisterStep implements OnClickListener,
 				ToastUtil.showToast("手机号格式不正确", Toast.LENGTH_SHORT);
 				return;
 			}
-			mOnNextListener.next();
-
-			// dialog = DialogUtil.createLoadingDialog(mContext, "请稍候");
-			// dialog.show();
-			// verifyCellPhone(phone);
+			dialog = DialogUtil.createLoadingDialog(mContext);
+			dialog.show();
+			verifyCellPhone(phone);
 			break;
-
 		default:
 			break;
 		}

@@ -17,7 +17,6 @@ import com.meitu.data.enums.RetError;
 import com.meitu.task.UserRegisterTask;
 import com.meitu.utils.DialogUtil;
 import com.meitu.utils.ToastUtil;
-import com.meitu.utils.Utils;
 import com.meitu.view.MyEditTextDeleteImg;
 
 public class RegisterSetPassword extends RegisterStep implements
@@ -56,16 +55,16 @@ public class RegisterSetPassword extends RegisterStep implements
 	@Override
 	public void onClick(View v) {
 		mContext.startActivity(new Intent(mContext, MainActivity.class));
-		// String passwd = edit_password.getText().toString();
-		// String paswdAgain = edit_agagin_passwrod.getText().toString();
-		// if (!paswdAgain.equals(passwd)) {
-		// ToastUtil.showToast("两次输入的密码不一致", Toast.LENGTH_SHORT);
-		// return;
-		// }
-		// mActivity.getmRegister().setUser_password(passwd);
-		// dialog = DialogUtil.createLoadingDialog(mContext, "请稍候");
-		// dialog.show();
-		// userRegister();
+		String passwd = edit_password.getText().toString();
+		String paswdAgain = edit_agagin_passwrod.getText().toString();
+		if (!paswdAgain.equals(passwd)) {
+			ToastUtil.showToast("两次输入的密码不一致", Toast.LENGTH_SHORT);
+			return;
+		}
+		mActivity.getmRegister().setUser_password(passwd);
+		dialog = DialogUtil.createLoadingDialog(mContext);
+		dialog.show();
+		userRegister();
 	}
 
 	private void userRegister() {

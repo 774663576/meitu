@@ -3,7 +3,6 @@ package com.meitu.register;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
-
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,14 +125,14 @@ public class RegisterBasicInfo extends RegisterStep implements OnClickListener,
 			pop.show();
 			break;
 		case R.id.btnNext:
-//			mActivity.getmRegister().setUser_avatar(photoPath);
-//			mActivity.getmRegister().setUser_birthday(
-//					txtBirthday.getText().toString());
-//			if (rFemale.isChecked()) {
-//				mActivity.getmRegister().setUser_gender("Å®");
-//			} else {
-//				mActivity.getmRegister().setUser_gender("ÄÐ");
-//			}
+			mActivity.getmRegister().setUser_avatar(photoPath);
+			mActivity.getmRegister().setUser_birthday(
+					txtBirthday.getText().toString());
+			if (rFemale.isChecked()) {
+				mActivity.getmRegister().setUser_gender("Å®");
+			} else {
+				mActivity.getmRegister().setUser_gender("ÄÐ");
+			}
 			mOnNextListener.next();
 			break;
 		default:

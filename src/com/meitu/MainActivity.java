@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,7 +46,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		img_menu.setImageResource(R.drawable.menu_nomal);
 		drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
 		txt_title = (TextView) findViewById(R.id.title_txt);
-		txt_title.setText("√¿Õº√¿æ‰");
+		txt_title.setText("–ƒ¡Èº¶Ã¿");
 		mPullDownView = (PullDownView) findViewById(R.id.PullDownlistView);
 		mListView = mPullDownView.getListView();
 		mListView.setVerticalScrollBarEnabled(false);
