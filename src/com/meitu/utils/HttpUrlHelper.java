@@ -41,7 +41,7 @@ public class HttpUrlHelper {
 	// 192.168.1.100家
 	public static final int CONNECTION_TIMEOUT = 10 * 1000;
 	public static final int SO_TIMEOUT = 10 * 1000;
-	public static final String DEFAULT_HOST = "http://192.168.1.100:8080/MeiTu"; // 服务器地址
+	public static final String DEFAULT_HOST = "http://10.6.4.105:8080/MeiTu"; // 服务器地址
 
 	/**
 	 * get 提交方式 // *
@@ -220,7 +220,7 @@ public class HttpUrlHelper {
 		Iterator<?> iterator = map.entrySet().iterator();
 		if (file != null && file.exists()) {
 			FileBody fileBody = new FileBody(file);
-			mpEntity.addPart("file", fileBody);
+			mpEntity.addPart("image", fileBody);
 		}
 		try {
 
