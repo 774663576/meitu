@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -148,6 +149,47 @@ public class ArticleAdapter extends BaseAdapter {
 				holder.img_avatar, R.drawable.default_avatar);
 		holder.txt_user_name.setText(article.getPublisher_name());
 		return contentView;
+	}
+
+	class Onclick implements OnClickListener {
+		int position;
+
+		public Onclick(int position) {
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// if (lists.get(position).isUploading()) {
+			// ToastUtil.showToast("动态正在发布中,请稍候...", Toast.LENGTH_SHORT);
+			// return;
+			// }
+			switch (v.getId()) {
+			case R.id.btn_comment:
+				// Intent intent = new Intent();
+				// intent.putExtra("growth", lists.get(position));
+				// intent.putExtra("position", position);
+				// intent.setClass(mContext, CommentActivity.class);
+				// mContext.startActivity(intent);
+				// Utils.leftOutRightIn(mContext);
+				break;
+			case R.id.btn_prise:
+				// if (isTasking) {
+				// return;
+				// }
+				// Growth growth = lists.get(position);
+				// if (!growth.isPraise()) {
+				// praise(growth, (TextView) v);
+				// } else {
+				// cancelPraise(growth, (TextView) v);
+				// }
+				break;
+			default:
+				intentImagePager(position, 1);
+				break;
+			}
+
+		}
 	}
 
 	class GridViewOnItemClick implements OnItemClickListener {

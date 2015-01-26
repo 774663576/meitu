@@ -50,7 +50,7 @@ public class Result<T> {
 		return "Result [ status=" + status + ", err=" + err + "]";
 	}
 
-	public static Result defContentErrorResult() {
+	public static Result<?> defContentErrorResult() {
 		return new Result(RetStatus.FAIL, RetError.NONE);
 	}
 

@@ -38,10 +38,10 @@ import com.meitu.utils.Logger.Level;
 public class HttpUrlHelper {
 	// 10.6.7.219 公司
 	// 123.56.46.254线上
-	// 192.168.1.100家
+	// 192.168.1.102家
 	public static final int CONNECTION_TIMEOUT = 10 * 1000;
 	public static final int SO_TIMEOUT = 10 * 1000;
-	public static final String DEFAULT_HOST = "http://10.6.4.105:8080/MeiTu"; // 服务器地址
+	public static final String DEFAULT_HOST = "http://192.168.1.102:8080/MeiTu"; // 服务器地址
 
 	/**
 	 * get 提交方式 // *

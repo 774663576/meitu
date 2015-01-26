@@ -22,5 +22,8 @@
     <string name="pull_refresh">下拉刷新</string>
     <string name="last_refresh">上次更新</string>
     <string name="loading_more">加载更多</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

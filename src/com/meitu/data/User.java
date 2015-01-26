@@ -9,11 +9,14 @@ import com.meitu.data.result.ApiRequest;
 import com.meitu.data.result.Result;
 import com.meitu.parser.IParser;
 import com.meitu.parser.SimpleParser;
+import com.meitu.parser.UserLoginPaser;
 import com.meitu.utils.BitmapUtils;
+import com.meitu.utils.SharedUtils;
 
 public class User {
 	private static final String USER_REGISTER_API = "/register.do";
 	private static final String VERIFY_CELLPHONE_API = "/checkoutMobilNum.do";
+	private static final String USER_LOGIN_API = "/login.do";
 
 	private String user_phone = "";// 用户注册电话
 	private String user_name = "";// 用户注册姓名
@@ -120,4 +123,22 @@ public class User {
 
 	}
 
+	public RetError login() {
+		IParser parser = new UserLoginPaser();
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("user_phone", user_phone);
+		params.put("user_password", user_password);
+		Result<?> ret = ApiRequest.request(USER_LOGIN_API, params, parser);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			User user = (User) ret.getData();
+			SharedUtils.setUid(user.getUser_id() + "");
+			SharedUtils.setAPPUserAvatar(user.getUser_avatar());
+			SharedUtils.setAPPUserBirthday(user.getUser_birthday());
+			SharedUtils.setAPPUserGender(user.getUser_gender());
+			SharedUtils.setAPPUserName(user.getUser_name());
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
+	}
 }
