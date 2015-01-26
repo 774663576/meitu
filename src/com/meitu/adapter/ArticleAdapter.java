@@ -148,6 +148,7 @@ public class ArticleAdapter extends BaseAdapter {
 		UniversalImageLoadTool.disPlay(article.getPublisher_avatar(),
 				holder.img_avatar, R.drawable.default_avatar);
 		holder.txt_user_name.setText(article.getPublisher_name());
+		holder.img.setOnClickListener(new Onclick(position));
 		return contentView;
 	}
 
