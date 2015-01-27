@@ -130,6 +130,7 @@ public class LoginActivity extends BaseActivity implements OnTextLengthChange {
 				}
 				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				Utils.leftOutRightIn(LoginActivity.this);
+				finishThisActivity();
 			}
 		});
 		task.executeParallel(user);

@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Comment;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 
+import com.meitu.data.enums.ArticleState;
 import com.meitu.data.enums.RetError;
 import com.meitu.data.enums.RetStatus;
 import com.meitu.data.result.ApiRequest;
 import com.meitu.data.result.Result;
+import com.meitu.db.Const;
 import com.meitu.parser.IParser;
 import com.meitu.parser.UploadArticleParser;
 import com.meitu.utils.BitmapUtils;
@@ -31,6 +34,16 @@ public class Article extends AbstractData {
 	private boolean isPraise;
 	private int praise_count;
 	private boolean isUploading = false;
+
+	private ArticleState state;
+
+	public ArticleState getState() {
+		return state;
+	}
+
+	public void setState(ArticleState state) {
+		this.state = state;
+	}
 
 	public boolean isUploading() {
 		return isUploading;
@@ -229,51 +242,50 @@ public class Article extends AbstractData {
 		}
 	}
 
-	// @Override
-	// public void write(SQLiteDatabase db) {
-	// String dbName = Const.GROWTHS_TABLE_NAME;
-	// ContentValues cv = new ContentValues();
-	// cv.put("growth_id", this.growth_id);
-	// cv.put("cid", this.cid);
-	// cv.put("publisher_id", this.publisher_id);
-	// cv.put("content", this.content);
-	// cv.put("time", this.published);
-	// cv.put("publisher_name", this.publisher_name);
-	// cv.put("publisher_avatar", this.publisher_avatar);
-	// cv.put("isPraise", this.isPraise);
-	// cv.put("praise_count", this.praise_count);
-	// cv.put("last_update_time", this.last_update_time);
-	// if (state == GrowthState.DEL) {
-	// db.delete(dbName, "growth_id=? ", new String[] { this.growth_id
-	// + "" });
-	// for (GrowthImage img : this.images) {
-	// img.setStatus(Status.DEL);
-	// img.write(db);
-	// }
-	// for (Comment comment : this.comments) {
-	// comment.setStatus(Status.DEL);
-	// comment.write(db);
-	// }
-	// for (Praise praise : this.praises) {
-	// praise.setStatus(Status.DEL);
-	// praise.write(db);
-	// }
-	// return;
-	// }
-	// if (state == GrowthState.UPDATE) {
-	// db.update(dbName, cv, "growth_id=? ", new String[] { this.growth_id
-	// + "" });
-	// return;
-	// }
-	// db.insert(dbName, null, cv);
-	// for (GrowthImage img : this.images) {
-	// img.write(db);
-	// }
-	// for (Comment comment : this.comments) {
-	// comment.write(db);
-	// }
-	// for (Praise praise : this.praises) {
-	// praise.write(db);
-	// }
-	// }
+	@Override
+	public void write(SQLiteDatabase db) {
+		String dbName = Const.ARTICLE_TABLE_NAME;
+		ContentValues cv = new ContentValues();
+		cv.put("article_id", this.article_id);
+		cv.put("publisher_id", this.publisher_id);
+		cv.put("content", this.content);
+		cv.put("time", this.published);
+		cv.put("publisher_name", this.publisher_name);
+		cv.put("publisher_avatar", this.publisher_avatar);
+		cv.put("isPraise", this.isPraise);
+		cv.put("praise_count", this.praise_count);
+		cv.put("last_update_time", this.last_update_time);
+		if (state == ArticleState.DEL) {
+			db.delete(dbName, "article_id=? ", new String[] { this.article_id
+					+ "" });
+			for (ArticleImage img : this.images) {
+				img.setStatus(Status.DEL);
+				img.write(db);
+			}
+			for (Comment comment : this.comments) {
+				comment.setStatus(Status.DEL);
+				comment.write(db);
+			}
+			for (Praise praise : this.praises) {
+				praise.setStatus(Status.DEL);
+				praise.write(db);
+			}
+			return;
+		}
+		if (state == ArticleState.UPDATE) {
+			db.update(dbName, cv, "article_id=? ",
+					new String[] { this.article_id + "" });
+			return;
+		}
+		db.insert(dbName, null, cv);
+		for (ArticleImage img : this.images) {
+			img.write(db);
+		}
+		for (Comment comment : this.comments) {
+			comment.write(db);
+		}
+		for (Praise praise : this.praises) {
+			praise.write(db);
+		}
+	}
 }

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.meitu.data.enums.CircleMemberState;
-
 import android.database.sqlite.SQLiteDatabase;
 
 public abstract class AbstractData implements IData, Serializable {
