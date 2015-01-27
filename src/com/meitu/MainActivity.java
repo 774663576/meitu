@@ -3,6 +3,7 @@ package com.meitu;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,11 +14,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meitu.Interface.AbstractTaskPostCallBack;
 import com.meitu.adapter.ArticleAdapter;
 import com.meitu.data.Article;
+import com.meitu.data.ArticleList;
+import com.meitu.data.enums.RetError;
+import com.meitu.task.GetArticleListTask;
+import com.meitu.task.UpLoadArticleTask;
 import com.meitu.utils.DateUtils;
+import com.meitu.utils.DialogUtil;
 import com.meitu.utils.SharedUtils;
+import com.meitu.utils.ToastUtil;
 import com.meitu.view.PullDownView;
 import com.meitu.view.PullDownView.OnPullDownListener;
 
@@ -32,6 +41,9 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	private ArticleAdapter adapter;
 
 	private List<Article> lists = new ArrayList<Article>();
+	private Dialog dialog;
+
+	private ArticleList alist = new ArticleList();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +51,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		setContentView(R.layout.activity_main);
 		initView();
 		setValue();
+		getArticleList();
 	}
 
 	private void initView() {
@@ -67,6 +80,37 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		mListView.setAdapter(adapter);
 		mPullDownView.addFooterView();
 
+	}
+
+	private void getArticleList() {
+		dialog = DialogUtil.createLoadingDialog(this);
+		dialog.show();
+		GetArticleListTask task = new GetArticleListTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+
+				mPullDownView.RefreshComplete();
+				mPullDownView.notifyDidMore();
+
+				if (dialog != null) {
+					dialog.dismiss();
+				}
+				if (result != RetError.NONE) {
+					return;
+				}
+
+				lists.clear();
+				lists.addAll(alist.getArticles());
+				adapter.notifyDataSetChanged();
+				if (lists.size() > 19) {
+					mPullDownView.setFooterVisible(true);
+				} else {
+					mPullDownView.setFooterVisible(false);
+				}
+			}
+		});
+		task.executeParallel(alist);
 	}
 
 	@Override
@@ -103,6 +147,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		drawerLayout.closeDrawers();
 		if (requestCode == 200) {
 			if (data == null) {
 				return;
@@ -115,7 +160,37 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 			lists.add(0, article);
 			adapter.notifyDataSetChanged();
 			mListView.setSelection(0);
+			upLoadGrowth(article);
 
 		}
+	}
+
+	private boolean isUpLoading = false;
+
+	public boolean isUpLoading() {
+		return isUpLoading;
+	}
+
+	private void upLoadGrowth(Article article) {
+		isUpLoading = true;
+		UpLoadArticleTask task = new UpLoadArticleTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				isUpLoading = false;
+				if (result != RetError.NONE) {
+					return;
+				}
+				ToastUtil.showToast("发布成功", Toast.LENGTH_SHORT);
+				adapter.notifyDataSetChanged();
+				for (Article g : lists) {
+					if (g.isUploading()) {
+						g.setUploading(false);
+						break;
+					}
+				}
+			}
+		});
+		task.executeParallel(article);
 	}
 }

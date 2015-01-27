@@ -36,12 +36,11 @@ import com.meitu.utils.Logger.Level;
  * 
  */
 public class HttpUrlHelper {
-	// 10.6.7.219 公司
-	// 123.56.46.254线上
+	// 10.6.4.105 公司
 	// 192.168.1.102家
 	public static final int CONNECTION_TIMEOUT = 10 * 1000;
 	public static final int SO_TIMEOUT = 10 * 1000;
-	public static final String DEFAULT_HOST = "http://192.168.1.102:8080/MeiTu"; // 服务器地址
+	public static final String DEFAULT_HOST = "http://10.6.4.105:8080/MeiTu"; // 服务器地址
 
 	/**
 	 * get 提交方式 // *
@@ -277,7 +276,9 @@ public class HttpUrlHelper {
 		Iterator<?> iterator = map.entrySet().iterator();
 		for (int i = 0; i < files.size(); i++) {
 			FileBody fileBody = new FileBody(files.get(i), "image/pjpeg");
-			mpEntity.addPart("image" + i, fileBody);
+			// mpEntity.addPart("image" + i, fileBody);
+			mpEntity.addPart("image", fileBody);
+
 		}
 		try {
 			while (iterator.hasNext()) {

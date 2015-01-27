@@ -12,7 +12,7 @@ public class UserLoginPaser implements IParser {
 		if (jsonObj == null) {
 			return Result.defContentErrorResult();
 		}
-
+		System.out.println("result:::::::::::" + jsonObj);
 		String jsonArr = jsonObj.getString("user");
 		if (jsonArr == null) {
 			return Result.defContentErrorResult();

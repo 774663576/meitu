@@ -8,22 +8,16 @@ import java.util.Map;
 
 import org.w3c.dom.Comment;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.meitu.data.enums.GrowthState;
 import com.meitu.data.enums.RetError;
 import com.meitu.data.enums.RetStatus;
 import com.meitu.data.result.ApiRequest;
 import com.meitu.data.result.Result;
-import com.meitu.data.result.StringResult;
-import com.meitu.db.Const;
 import com.meitu.parser.IParser;
-import com.meitu.parser.StringParser;
+import com.meitu.parser.UploadArticleParser;
 import com.meitu.utils.BitmapUtils;
-import com.meitu.utils.SharedUtils;
 
 public class Article extends AbstractData {
+	private static final String UPLOAD_ARTICLE_API = "/addarticle.do";
 	private int article_id = 0;// 成长id
 	private int publisher_id = 0;// 发布者id
 	private String content = "";// 内容
@@ -36,6 +30,15 @@ public class Article extends AbstractData {
 	private List<Praise> praises = new ArrayList<Praise>();
 	private boolean isPraise;
 	private int praise_count;
+	private boolean isUploading = false;
+
+	public boolean isUploading() {
+		return isUploading;
+	}
+
+	public void setUploading(boolean isUploading) {
+		this.isUploading = isUploading;
+	}
 
 	public int getPraise_count() {
 		return praise_count;
@@ -191,35 +194,32 @@ public class Article extends AbstractData {
 	// }
 	// }
 
-	// public RetError uploadForAdd() {
-	// List<File> bytesimg = new ArrayList<File>();
-	// for (GrowthImage img : this.images) {
-	// File file = BitmapUtils.getImageFile(img.getImg());
-	// if (file == null) {
-	// continue;
-	// }
-	// bytesimg.add(file);
-	// }
-	// IParser parser = new UploadGrowthParser();
-	// Map<String, Object> params = new HashMap<String, Object>();
-	// params.put("cid", cid);
-	// params.put("content", content);
-	// params.put("time", published);
-	// Result ret = ApiRequest.uploadFileArrayWithToken(ADD_GROWTH_API,
-	// params, bytesimg, parser);
-	// delGorwthImgFile(bytesimg);
-	// if (ret.getStatus() == RetStatus.SUCC) {
-	// Growth g = (Growth) ret.getData();
-	// this.growth_id = g.getGrowth_id();
-	// this.images.clear();
-	// this.images = g.getImages();
-	// this.published = g.getPublished();
-	// this.last_update_time = g.getPublished();
-	// return RetError.NONE;
-	// } else {
-	// return ret.getErr();
-	// }
-	// }
+	public RetError uploadForAdd() {
+		List<File> bytesimg = new ArrayList<File>();
+		for (ArticleImage img : this.images) {
+			File file = BitmapUtils.getImageFile(img.getImg());
+			if (file == null) {
+			}
+			bytesimg.add(file);
+		}
+		IParser parser = new UploadArticleParser();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("content", content);
+		params.put("time", published);
+		Result ret = ApiRequest.uploadFileArrayWithToken(UPLOAD_ARTICLE_API,
+				params, bytesimg, parser);
+		delGorwthImgFile(bytesimg);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			Article g = (Article) ret.getData();
+			this.images.clear();
+			this.images = g.getImages();
+			this.published = g.getPublished();
+			this.last_update_time = g.getPublished();
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
+	}
 
 	private void delGorwthImgFile(List<File> files) {
 		for (File file : files) {

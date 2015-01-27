@@ -39,7 +39,7 @@ public class ApiRequest {
 		return Result.defContentErrorResult();
 	}
 
-	public static Result<?> request(String url, Map<String, Object> params,
+	public static Result request(String url, Map<String, Object> params,
 			IParser parser) {
 		params.put("user_id", SharedUtils.getUid());
 		for (String key : params.keySet()) {
@@ -51,7 +51,7 @@ public class ApiRequest {
 		return parse(parser, result, params);
 	}
 
-	public static Result<?> requestWithFile(String url,
+	public static Result requestWithFile(String url,
 			Map<String, Object> params, File file, IParser parser) {
 		params.put("user_id", SharedUtils.getUid());
 		for (String key : params.keySet()) {

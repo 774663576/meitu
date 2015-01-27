@@ -17,6 +17,7 @@ import com.meitu.data.User;
 import com.meitu.data.enums.RetError;
 import com.meitu.task.UserLoginTask;
 import com.meitu.utils.DialogUtil;
+import com.meitu.utils.SharedUtils;
 import com.meitu.utils.ToastUtil;
 import com.meitu.utils.Utils;
 import com.meitu.view.MyEditTextDeleteImg;
@@ -35,6 +36,11 @@ public class LoginActivity extends BaseActivity implements OnTextLengthChange {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		if (SharedUtils.getIntUid() != 0) {
+			startActivity(new Intent(LoginActivity.this, MainActivity.class));
+			finish();
+			return;
+		}
 		initView();
 	}
 
