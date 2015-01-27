@@ -32,7 +32,7 @@ public class ArticleListParser implements IParser {
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject obj = (JSONObject) jsonArr.opt(i);
 			// articles info
-			int article_id = obj.getInt("growth_id");
+			int article_id = obj.getInt("article_id");
 			int publisher = obj.getInt("publisher_id");
 			String content = obj.getString("content");
 			String published = obj.getString("time");
