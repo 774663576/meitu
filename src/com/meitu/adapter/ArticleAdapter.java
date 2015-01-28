@@ -18,12 +18,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meitu.ArticleCommentActivity;
 import com.meitu.R;
 import com.meitu.data.Article;
 import com.meitu.data.ArticleImage;
 import com.meitu.showbigpic.ImagePagerActivity;
 import com.meitu.utils.Constants;
 import com.meitu.utils.UniversalImageLoadTool;
+import com.meitu.utils.Utils;
 import com.meitu.view.ExpandGridView;
 
 public class ArticleAdapter extends BaseAdapter {
@@ -149,6 +151,7 @@ public class ArticleAdapter extends BaseAdapter {
 				holder.img_avatar, R.drawable.default_avatar);
 		holder.txt_user_name.setText(article.getPublisher_name());
 		holder.img.setOnClickListener(new Onclick(position));
+		holder.btn_comment.setOnClickListener(new Onclick(position));
 		return contentView;
 	}
 
@@ -167,12 +170,12 @@ public class ArticleAdapter extends BaseAdapter {
 			// }
 			switch (v.getId()) {
 			case R.id.btn_comment:
-				// Intent intent = new Intent();
-				// intent.putExtra("growth", lists.get(position));
-				// intent.putExtra("position", position);
-				// intent.setClass(mContext, CommentActivity.class);
-				// mContext.startActivity(intent);
-				// Utils.leftOutRightIn(mContext);
+				Intent intent = new Intent();
+				intent.putExtra("article", lists.get(position));
+				intent.putExtra("position", position);
+				intent.setClass(mContext, ArticleCommentActivity.class);
+				mContext.startActivity(intent);
+				Utils.leftOutRightIn(mContext);
 				break;
 			case R.id.btn_prise:
 				// if (isTasking) {

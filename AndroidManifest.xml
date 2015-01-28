@@ -72,6 +72,10 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.meitu.ArticleCommentActivity"
+            android:label="@string/title_activity_article_comment" >
+        </activity>
     </application>
 
 </manifest>
