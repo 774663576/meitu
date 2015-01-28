@@ -22,6 +22,7 @@ import com.meitu.data.Article;
 import com.meitu.data.ArticleList;
 import com.meitu.data.enums.RetError;
 import com.meitu.task.GetArticleListTask;
+import com.meitu.task.GetArticlesFormDBTask;
 import com.meitu.task.UpLoadArticleTask;
 import com.meitu.utils.DateUtils;
 import com.meitu.utils.DialogUtil;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		setContentView(R.layout.activity_main);
 		initView();
 		setValue();
-		getArticleList();
+		getGrowthFromDB();
 	}
 
 	private void initView() {
@@ -82,9 +83,37 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 
 	}
 
-	private void getArticleList() {
+	private void getGrowthFromDB() {
 		dialog = DialogUtil.createLoadingDialog(this);
 		dialog.show();
+		GetArticlesFormDBTask task = new GetArticlesFormDBTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				lists.addAll(alist.getArticles());
+				adapter.notifyDataSetChanged();
+				if (lists.size() == 0) {
+					getArticleList();
+				} else {
+					if (dialog != null) {
+						dialog.dismiss();
+					}
+					if (lists.size() > 19) {
+						mPullDownView.setFooterVisible(true);
+					} else {
+						mPullDownView.setFooterVisible(false);
+
+					}
+					alist.setRefushState(1);
+					alist.setRefushTime(lists.get(0).getLast_update_time());
+					getArticleList();
+				}
+			}
+		});
+		task.executeParallel(alist);
+	}
+
+	private void getArticleList() {
 		GetArticleListTask task = new GetArticleListTask();
 		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
 			@Override
@@ -92,21 +121,24 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 
 				mPullDownView.RefreshComplete();
 				mPullDownView.notifyDidMore();
-
 				if (dialog != null) {
 					dialog.dismiss();
 				}
 				if (result != RetError.NONE) {
 					return;
 				}
-
 				lists.clear();
 				lists.addAll(alist.getArticles());
 				adapter.notifyDataSetChanged();
-				if (lists.size() > 19) {
+				if (alist.getRequestArticles().size() > 19) {
 					mPullDownView.setFooterVisible(true);
 				} else {
 					mPullDownView.setFooterVisible(false);
+					if (lists.size() > 19
+							&& alist.getRequestArticles().size() == 0) {
+						mPullDownView.setFooterVisible(true);
+
+					}
 				}
 			}
 		});
@@ -136,12 +168,20 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 
 	@Override
 	public void onRefresh() {
-		mPullDownView.RefreshComplete();
+		if (lists.size() == 0) {
+			mPullDownView.RefreshComplete();
+			return;
+		}
+		alist.setRefushState(1);
+		alist.setRefushTime(lists.get(0).getLast_update_time());
+		getArticleList();
 	}
 
 	@Override
 	public void onMore() {
-
+		alist.setRefushState(2);
+		alist.setRefushTime(lists.get(lists.size() - 1).getPublished());
+		getArticleList();
 	}
 
 	@Override
