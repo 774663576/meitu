@@ -8,10 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.meitu.data.enums.RetError;
 import com.meitu.data.enums.RetStatus;
 import com.meitu.data.result.ApiRequest;
 import com.meitu.data.result.Result;
+import com.meitu.db.Const;
 import com.meitu.parser.ArticleListParser;
 import com.meitu.parser.IParser;
 
@@ -106,5 +110,43 @@ public class ArticleList extends AbstractData {
 			}
 			this.articles.add(article);
 		}
+	}
+
+	public void writeGrowth(SQLiteDatabase db) {
+		List<Article> newArticles = new ArrayList<Article>();
+		for (Article article : writeArticles) {
+			if (article.getStatus() == Status.UPDATE) {
+				db.delete(Const.ARTICLE_TABLE_NAME, "article_id=?",
+						new String[] { article.getArticle_id() + "" });
+				db.delete(Const.ARTICLE_IMAGE_TABLE_NAME, "article_id=?",
+						new String[] { article.getArticle_id() + "" });
+				db.delete(Const.COMMENT_TABLE_NAME, "growth_id=?",
+						new String[] { article.getArticle_id() + "" });
+				db.delete(Const.PRAISE_TABLE_NAME, "growth_id=?",
+						new String[] { article.getArticle_id() + "" });
+			}
+			newArticles.add(article);
+		}
+		for (Article article : newArticles) {
+			article.write(db);
+		}
+		writeArticles.clear();
+		// if (refushState == 1) {
+		// Cursor cursor = db.query(Const.ARTICLE_TABLE_NAME,
+		// new String[] { "_id" }, "cid=?", new String[] { cid + "" },
+		// null, null, null);
+		// if (cursor.getCount() > ARTICLE_COUNT) {
+		// cursor.move(GROUTH_COUNT);
+		// int id = cursor.getInt(cursor.getColumnIndex("_id"));
+		// db.delete(Const.GROWTHS_TABLE_NAME, "_id> ? and cid=?",
+		// new String[] { id + "", cid + "" });
+		// db.delete(Const.GROWTH_IMAGE_TABLE_NAME, "_id> ? and cid=?",
+		// new String[] { id + "", cid + "" });
+		// db.delete(Const.PRAISE_TABLE_NAME, "_id> ?", new String[] { id
+		// + "" });
+		// db.delete(Const.COMMENT_TABLE_NAME, "_id> ? ",
+		// new String[] { id + "" });
+		// }
+		// }
 	}
 }
