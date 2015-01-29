@@ -21,19 +21,29 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.meitu.Interface.AbstractTaskPostCallBack;
 import com.meitu.adapter.ArticleImgAdapter;
+import com.meitu.adapter.CommentAdapter;
 import com.meitu.data.Article;
 import com.meitu.data.ArticleImage;
 import com.meitu.data.Comment;
+import com.meitu.data.enums.RetError;
+import com.meitu.popwindow.CommentPopwindow;
+import com.meitu.popwindow.CommentPopwindow.OnCommentOnClick;
 import com.meitu.showbigpic.ImagePagerActivity;
+import com.meitu.task.SendCommentTask;
 import com.meitu.utils.Constants;
+import com.meitu.utils.DateUtils;
+import com.meitu.utils.DialogUtil;
+import com.meitu.utils.SharedUtils;
+import com.meitu.utils.ToastUtil;
 import com.meitu.utils.UniversalImageLoadTool;
 import com.meitu.utils.Utils;
 import com.meitu.view.ExpandGridView;
 import com.meitu.view.HorizontalListView;
 
 public class ArticleCommentActivity extends BaseActivity implements
-		OnItemClickListener, TextWatcher {
+		OnItemClickListener, TextWatcher, OnCommentOnClick {
 	private ImageView img_avatar;
 	private TextView txt_user_name;
 	private TextView txt_time;
@@ -50,7 +60,7 @@ public class ArticleCommentActivity extends BaseActivity implements
 
 	private Dialog dialog;
 
-	// private CommentAdapter adapter;
+	private CommentAdapter adapter;
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	private int position;
@@ -60,7 +70,7 @@ public class ArticleCommentActivity extends BaseActivity implements
 	private int replaySomeOneID = 0;
 	private String replaySomeOneName = "";
 
-	// private CommentPopwindow pop;
+	private CommentPopwindow pop;
 
 	private LinearLayout parise_layout;
 	private HorizontalListView praise_listView;
@@ -69,7 +79,6 @@ public class ArticleCommentActivity extends BaseActivity implements
 
 	private RelativeLayout layout_title;
 
- 
 	private boolean isTasking = false;
 
 	@Override
@@ -83,7 +92,7 @@ public class ArticleCommentActivity extends BaseActivity implements
 	}
 
 	private void initView() {
- 		layout_title = (RelativeLayout) findViewById(R.id.layout_title);
+		layout_title = (RelativeLayout) findViewById(R.id.layout_title);
 		back = (ImageView) findViewById(R.id.back);
 		txt_title = (TextView) findViewById(R.id.title_txt);
 		img = (ImageView) findViewById(R.id.img);
@@ -106,7 +115,7 @@ public class ArticleCommentActivity extends BaseActivity implements
 		btnComment.setOnClickListener(this);
 		edit_comment.addTextChangedListener(this);
 		mListView.setOnItemClickListener(this);
- 		img_grid_view.setOnItemClickListener(new GridViewOnItemClick());
+		img_grid_view.setOnItemClickListener(new GridViewOnItemClick());
 		Utils.getFocus(layout_title);
 	}
 
@@ -148,9 +157,10 @@ public class ArticleCommentActivity extends BaseActivity implements
 				img_avatar, R.drawable.default_avatar);
 		txt_user_name.setText(article.getPublisher_name());
 		comments = article.getComments();
-		// adapter = new CommentAdapter(this, comments);
-		// mListView.setAdapter(adapter);
- 		// praiseAdapter = new PraiseAdapter(this, article.getPraises());
+		adapter = new CommentAdapter(this, comments);
+		mListView.setAdapter(adapter);
+		viewLineVisible();
+		// praiseAdapter = new PraiseAdapter(this, article.getPraises());
 		// if (Article.getPraises().size() > 0) {
 		// parise_layout.setVisibility(View.VISIBLE);
 		// praise_listView.setAdapter(praiseAdapter);
@@ -158,9 +168,8 @@ public class ArticleCommentActivity extends BaseActivity implements
 		// parise_layout.setVisibility(View.GONE);
 		//
 		// }
-		 
-	}
 
+	}
 
 	private void praise() {
 		// isTasking = true;
@@ -223,51 +232,66 @@ public class ArticleCommentActivity extends BaseActivity implements
 		case R.id.back:
 			finishThisActivity();
 			break;
+		case R.id.btnComment:
+			String content = edit_comment.getText().toString().trim();
+			if (content.length() == 0) {
+				return;
+			}
+			sendComment(content.replace("@" + replaySomeOneName, ""));
+			break;
 		default:
 			break;
 		}
 	}
 
-	private void sendComment(String content) {
-		// dialog = DialogUtil.createLoadingDialog(this, "请稍候");
-		// dialog.show();
-		// final Comment comment = new Comment();
-		// comment.setComment_content(content);
-		// if (isReplaySomeOne) {
-		// comment.setReply_someone_name(replaySomeOneName);
-		// comment.setReply_someone_id(replaySomeOneID);
-		// }
-		// comment.setArticle_id(article.getArticle_id());
-		// comment.setComment_time(DateUtils.getGrowthShowTime());
-		// comment.setPublisher_id(SharedUtils.getIntUid());
-		// comment.setPublisher_avatar(SharedUtils.getAPPUserAvatar());
-		// comment.setPublisher_name(SharedUtils.getAPPUserName());
-		// SendCommentTask task = new
-		// SendCommentTask(Article.getPublisher_id());
-		// task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
-		// @Override
-		// public void taskFinish(RetError result) {
-		// if (dialog != null) {
-		// dialog.dismiss();
-		// }
-		// if (result != RetError.NONE) {
-		// return;
-		// }
-		// edit_comment.setText("");
-		// ToastUtil.showToast("回复成功", Toast.LENGTH_SHORT);
-		// comments.add(0, comment);
-		// adapter.notifyDataSetChanged();
-		// viewLineVisible();
-		// Intent intent = new Intent();
-		// intent.putExtra("position", position);
-		// intent.putExtra("comment", comment);
-		// intent.setAction(Constants.COMMENT_Article);
-		// sendBroadcast(intent);
-		// }
-		// });
-		// task.executeParallel(comment);
+	private void viewLineVisible() {
+		if (comments.size() > 0) {
+			comment_layout.setVisibility(View.VISIBLE);
+		} else {
+			comment_layout.setVisibility(View.GONE);
+		}
+
 	}
 
+	private void sendComment(String content) {
+		dialog = DialogUtil.createLoadingDialog(this, "请稍候");
+		dialog.show();
+		final Comment comment = new Comment();
+		comment.setComment_content(content);
+		if (isReplaySomeOne) {
+			comment.setReply_someone_name(replaySomeOneName);
+			comment.setReply_someone_id(replaySomeOneID);
+		}
+		comment.setArticle_id(article.getArticle_id());
+		comment.setComment_time(DateUtils.getGrowthShowTime());
+		comment.setPublisher_id(SharedUtils.getIntUid());
+		comment.setPublisher_avatar(SharedUtils.getAPPUserAvatar());
+		comment.setPublisher_name(SharedUtils.getAPPUserName());
+		SendCommentTask task = new SendCommentTask(article.getPublisher_id());
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				if (dialog != null) {
+					dialog.dismiss();
+				}
+				if (result != RetError.NONE) {
+					return;
+				}
+				edit_comment.setText("");
+				ToastUtil.showToast("回复成功");
+				comments.add(0, comment);
+				adapter.notifyDataSetChanged();
+				viewLineVisible();
+				System.out.println("size::::::::;" + comments.size());
+				// Intent intent = new Intent();
+				// intent.putExtra("position", position);
+				// intent.putExtra("comment", comment);
+				// intent.setAction(Constants.COMMENT_Article);
+				// sendBroadcast(intent);
+			}
+		});
+		task.executeParallel(comment);
+	}
 
 	private void delReplaySomeOne() {
 		isReplaySomeOne = false;
@@ -278,10 +302,10 @@ public class ArticleCommentActivity extends BaseActivity implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int position,
 			long arg3) {
-		// pop = new CommentPopwindow(this, view, position,
-		// Article.getPublisher_id());
-		// pop.setmCallBack(this);
-		// pop.show();
+		pop = new CommentPopwindow(this, view, position,
+				article.getPublisher_id());
+		pop.setmCallBack(this);
+		pop.show();
 
 	}
 
@@ -306,14 +330,15 @@ public class ArticleCommentActivity extends BaseActivity implements
 
 	}
 
+	@Override
 	public void onClick(int position, int id) {
 		switch (id) {
-		// case R.id.txt_reply:
-		// reply(position);
-		// break;
-		// case R.id.txt_del:
-		// del(position);
-		// break;
+		case R.id.txt_reply:
+			reply(position);
+			break;
+		case R.id.txt_del:
+			del(position);
+			break;
 		default:
 			break;
 		}

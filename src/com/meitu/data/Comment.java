@@ -17,7 +17,7 @@ import com.meitu.parser.StringParser;
 import com.meitu.utils.SharedUtils;
 
 public class Comment extends AbstractData {
-	private final String COMMENT_API = "CommentServlet";
+	private final String COMMENT_API = "/articlecomment.do";
 	private final String DELETE_COMMENT_API = "DeleteCommentServlet";
 
 	private int comment_id;
@@ -107,14 +107,14 @@ public class Comment extends AbstractData {
 		return "comment_content:" + this.comment_content;
 	}
 
-	public RetError sendComment(int growth_publisher_id) {
+	public RetError sendComment(int article_publisher_id) {
 		IParser parser = new StringParser("comment_id");
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("comment_content", comment_content);
 		params.put("article_id", article_id);
 		params.put("reply_someone_name", reply_someone_name);
 		params.put("reply_someone_id", reply_someone_id);
-		params.put("growth_publisher_id", growth_publisher_id);
+		params.put("article_publisher_id", article_publisher_id);
 		params.put("user_name", SharedUtils.getAPPUserName());
 		Result ret = ApiRequest.request(COMMENT_API, params, parser);
 		if (ret.getStatus() == RetStatus.SUCC) {

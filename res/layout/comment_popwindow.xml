@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#70000000"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dip"
+        android:layout_marginRight="50dip"
+        android:background="@drawable/circle_item_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_del"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dip"
+            android:text="删除回复" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="#d5d5d5" />
+
+        <TextView
+            android:id="@+id/txt_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dip"
+            android:text="回复TA" />
+    </LinearLayout>
+
+</LinearLayout>

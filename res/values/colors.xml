@@ -25,5 +25,9 @@
     <color name="transparent_half">#e0000000</color>
     <color name="txt_color">#485355</color>
     <color name="txt_desc_color">#666666</color>
+    <color name="comment_color">#ce6100</color>
+    <color name="self_comment_color">#37b669</color>
+    <color name="qq_bg_chat_color">#ebeceb</color>
+    <color name="qq_bg_chat_bottom_color">#ebecee</color>
 
 </resources>
