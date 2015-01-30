@@ -54,33 +54,33 @@ public class ArticleListParser implements IParser {
 				images.add(gimg);
 			}
 			// comments
-			// JSONArray commentsJson = obj.getJSONArray("comments");
-			// List<Comment> comments = new ArrayList<Comment>();
-			// for (int j = 0; j < commentsJson.length(); j++) {
-			// JSONObject obj2 = (JSONObject) commentsJson.opt(j);
-			// int comment_id = obj2.getInt("comment_id");
-			// int publisher_id = obj2.getInt("publisher_id");
-			// String comment_time = obj2.getString("comment_time");
-			// String comment_content = obj2.getString("comment_content");
-			// String comm_publisher_name = obj2.getString("publisher_name");
-			// String comm_publisher_avatar = obj2
-			// .getString("publisher_avatar");
-			// String reply_someone_name = obj2
-			// .getString("reply_someone_name");
-			// int reply_someone_id = obj2.getInt("reply_someone_id");
-			// Comment comment = new Comment();
-			// comment.setComment_content(comment_content);
-			// comment.setComment_id(comment_id);
-			// comment.setComment_time(comment_time);
-			// comment.setPublisher_id(publisher_id);
-			// comment.setGrowth_id(growth_id);
-			// comment.setPublisher_avatar(comm_publisher_avatar);
-			// comment.setPublisher_name(comm_publisher_name);
-			// comment.setReply_someone_name(reply_someone_name);
-			// comment.setReply_someone_id(reply_someone_id);
-			// comments.add(comment);
-			// }
-			// sortComment(comments);
+			JSONArray commentsJson = obj.getJSONArray("comments");
+			List<Comment> comments = new ArrayList<Comment>();
+			for (int j = 0; j < commentsJson.length(); j++) {
+				JSONObject obj2 = (JSONObject) commentsJson.opt(j);
+				int comment_id = obj2.getInt("comment_id");
+				int publisher_id = obj2.getInt("publisher_id");
+				String comment_time = obj2.getString("comment_time");
+				String comment_content = obj2.getString("comment_content");
+				String comm_publisher_name = obj2.getString("publisher_name");
+				String comm_publisher_avatar = obj2
+						.getString("publisher_avatar");
+				String reply_someone_name = obj2
+						.getString("reply_someone_name");
+				int reply_someone_id = obj2.getInt("reply_someone_id");
+				Comment comment = new Comment();
+				comment.setComment_content(comment_content);
+				comment.setComment_id(comment_id);
+				comment.setComment_time(comment_time);
+				comment.setPublisher_id(publisher_id);
+				comment.setArticle_id(article_id);
+				comment.setPublisher_avatar(comm_publisher_avatar);
+				comment.setPublisher_name(comm_publisher_name);
+				comment.setReply_someone_name(reply_someone_name);
+				comment.setReply_someone_id(reply_someone_id);
+				comments.add(comment);
+			}
+			sortComment(comments);
 			// JSONArray jsonPraise = obj.getJSONArray("praises");
 			// List<Praise> praises = new ArrayList<Praise>();
 			// for (int k = 0; k < jsonPraise.length(); k++) {

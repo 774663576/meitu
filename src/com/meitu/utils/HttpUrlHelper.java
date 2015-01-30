@@ -32,14 +32,14 @@ import com.meitu.utils.Logger.Level;
 /**
  * 有关http辅助操作类
  * 
-  * 
+ * 
  */
 public class HttpUrlHelper {
 	// 10.6.4.105 公司
 	// 192.168.1.102家
 	public static final int CONNECTION_TIMEOUT = 10 * 1000;
 	public static final int SO_TIMEOUT = 10 * 1000;
-	public static final String DEFAULT_HOST = "http://192.168.1.102:8080/MeiTu"; // 服务器地址
+	public static final String DEFAULT_HOST = "http://10.6.4.105:8080/MeiTu"; // 服务器地址
 
 	/**
 	 * get 提交方式 // *
