@@ -18,7 +18,7 @@ import com.meitu.utils.SharedUtils;
 
 public class Comment extends AbstractData {
 	private final String COMMENT_API = "/articlecomment.do";
-	private final String DELETE_COMMENT_API = "DeleteCommentServlet";
+	private final String DELETE_COMMENT_API = "/delcomment.do";
 
 	private int comment_id;
 	private int article_id;

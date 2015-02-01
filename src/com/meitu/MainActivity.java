@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,10 +23,12 @@ import com.meitu.Interface.AbstractTaskPostCallBack;
 import com.meitu.adapter.ArticleAdapter;
 import com.meitu.data.Article;
 import com.meitu.data.ArticleList;
+import com.meitu.data.Comment;
 import com.meitu.data.enums.RetError;
 import com.meitu.task.GetArticleListTask;
 import com.meitu.task.GetArticlesFormDBTask;
 import com.meitu.task.UpLoadArticleTask;
+import com.meitu.utils.Constants;
 import com.meitu.utils.DateUtils;
 import com.meitu.utils.DialogUtil;
 import com.meitu.utils.SharedUtils;
@@ -40,7 +45,6 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	public DrawerLayout drawerLayout;// 侧边栏布局
 
 	private ArticleAdapter adapter;
-
 	private List<Article> lists = new ArrayList<Article>();
 	private Dialog dialog;
 
@@ -53,6 +57,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		initView();
 		setValue();
 		getGrowthFromDB();
+		registerBoradcastReceiver();
 	}
 
 	private void initView() {
@@ -60,7 +65,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		img_menu.setImageResource(R.drawable.menu_nomal);
 		drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
 		txt_title = (TextView) findViewById(R.id.title_txt);
-		txt_title.setText("心灵鸡汤");
+		txt_title.setText("心灵频道");
 		mPullDownView = (PullDownView) findViewById(R.id.PullDownlistView);
 		mListView = mPullDownView.getListView();
 		mListView.setVerticalScrollBarEnabled(false);
@@ -197,6 +202,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 			article.setPublished(DateUtils.getGrowthShowTime());
 			article.setPublisher_avatar(SharedUtils.getAPPUserAvatar());
 			article.setPublisher_name(SharedUtils.getAPPUserName());
+			article.setUploading(true);
 			lists.add(0, article);
 			adapter.notifyDataSetChanged();
 			mListView.setSelection(0);
@@ -205,9 +211,9 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		}
 	}
 
-	private boolean isUpLoading = false;
+	private static boolean isUpLoading = false;
 
-	public boolean isUpLoading() {
+	public static boolean isUpLoading() {
 		return isUpLoading;
 	}
 
@@ -233,4 +239,54 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 		});
 		task.executeParallel(article);
 	}
+
+	/**
+	 * 注册该广播
+	 */
+	public void registerBoradcastReceiver() {
+		IntentFilter myIntentFilter = new IntentFilter();
+		myIntentFilter.addAction(Constants.COMMENT_ARTICLE);
+		myIntentFilter.addAction(Constants.DEL_COMMENT);
+		// 注册广播
+		registerReceiver(mBroadcastReceiver, myIntentFilter);
+	}
+
+	/**
+	 * 定义广播
+	 */
+	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(Constants.COMMENT_ARTICLE)) {
+				Comment coment = (Comment) intent
+						.getSerializableExtra("comment");
+				int position = intent.getIntExtra("position", -1);
+				lists.get(position).getComments().add(0, coment);
+				adapter.notifyDataSetChanged();
+
+			} else if (action.equals(Constants.DEL_COMMENT)) {
+				int article_id = intent.getIntExtra("article_id", 0);
+				int comment_id = intent.getIntExtra("comment_id", 0);
+				for (Article growth : lists) {
+					if (growth.getArticle_id() == article_id) {
+						for (Comment pr : growth.getComments()) {
+							if (pr.getComment_id() == comment_id) {
+								growth.getComments().remove(pr);
+								break;
+							}
+						}
+						adapter.notifyDataSetChanged();
+						break;
+					}
+				}
+
+			}
+		}
+	};
+
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mBroadcastReceiver);
+	};
 }

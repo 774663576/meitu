@@ -17,6 +17,7 @@ public class User {
 	private static final String USER_REGISTER_API = "/register.do";
 	private static final String VERIFY_CELLPHONE_API = "/checkoutMobilNum.do";
 	private static final String USER_LOGIN_API = "/login.do";
+	private static final String GET_USER_INFO = "/userinfo.do";
 
 	private String user_phone = "";// 用户注册电话
 	private String user_name = "";// 用户注册姓名
@@ -136,6 +137,24 @@ public class User {
 			SharedUtils.setAPPUserBirthday(user.getUser_birthday());
 			SharedUtils.setAPPUserGender(user.getUser_gender());
 			SharedUtils.setAPPUserName(user.getUser_name());
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
+	}
+
+	public RetError getUserInfo() {
+		IParser parser = new UserLoginPaser();
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("uid", user_id);
+		Result<?> ret = ApiRequest.request(GET_USER_INFO, params, parser);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			User user = (User) ret.getData();
+			SharedUtils.setUid(user.getUser_id() + "");
+			this.user_avatar = user.getUser_avatar();
+			this.user_birthday = user.getUser_birthday();
+			this.user_gender = user.getUser_gender();
+			this.user_name = user.getUser_name();
 			return RetError.NONE;
 		} else {
 			return ret.getErr();

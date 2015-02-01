@@ -8,40 +8,40 @@ package fynn.app;
 
 public final class R {
 	public static final class drawable {
-		public static final int fynn_prompt_dialog_bg_normal = 0x7f02006e;
-		public static final int fynn_prompt_dialog_btn_center_normal = 0x7f02006f;
-		public static final int fynn_prompt_dialog_btn_center_pressed = 0x7f020070;
-		public static final int fynn_prompt_dialog_btn_center_selector = 0x7f020071;
-		public static final int fynn_prompt_dialog_btn_left_normal = 0x7f020072;
-		public static final int fynn_prompt_dialog_btn_left_pressed = 0x7f020073;
-		public static final int fynn_prompt_dialog_btn_left_selector = 0x7f020074;
-		public static final int fynn_prompt_dialog_btn_right_normal = 0x7f020075;
-		public static final int fynn_prompt_dialog_btn_right_pressed = 0x7f020076;
-		public static final int fynn_prompt_dialog_btn_right_selector = 0x7f020077;
-		public static final int fynn_prompt_dialog_btn_single_normal = 0x7f020078;
-		public static final int fynn_prompt_dialog_btn_single_pressed = 0x7f020079;
-		public static final int fynn_prompt_dialog_btn_single_selector = 0x7f02007a;
-		public static final int fynn_prompt_dialog_title_bar_bg_skyblue = 0x7f02007b;
+		public static final int fynn_prompt_dialog_bg_normal = 0x7f02006f;
+		public static final int fynn_prompt_dialog_btn_center_normal = 0x7f020070;
+		public static final int fynn_prompt_dialog_btn_center_pressed = 0x7f020071;
+		public static final int fynn_prompt_dialog_btn_center_selector = 0x7f020072;
+		public static final int fynn_prompt_dialog_btn_left_normal = 0x7f020073;
+		public static final int fynn_prompt_dialog_btn_left_pressed = 0x7f020074;
+		public static final int fynn_prompt_dialog_btn_left_selector = 0x7f020075;
+		public static final int fynn_prompt_dialog_btn_right_normal = 0x7f020076;
+		public static final int fynn_prompt_dialog_btn_right_pressed = 0x7f020077;
+		public static final int fynn_prompt_dialog_btn_right_selector = 0x7f020078;
+		public static final int fynn_prompt_dialog_btn_single_normal = 0x7f020079;
+		public static final int fynn_prompt_dialog_btn_single_pressed = 0x7f02007a;
+		public static final int fynn_prompt_dialog_btn_single_selector = 0x7f02007b;
+		public static final int fynn_prompt_dialog_title_bar_bg_skyblue = 0x7f02007c;
 	}
 	public static final class id {
-		public static final int btn_divider1 = 0x7f050085;
-		public static final int btn_divider2 = 0x7f050087;
-		public static final int btn_view = 0x7f050083;
-		public static final int button_center = 0x7f050086;
-		public static final int button_left = 0x7f050084;
-		public static final int button_right = 0x7f050088;
+		public static final int btn_divider1 = 0x7f05008c;
+		public static final int btn_divider2 = 0x7f05008e;
+		public static final int btn_view = 0x7f05008a;
+		public static final int button_center = 0x7f05008d;
+		public static final int button_left = 0x7f05008b;
+		public static final int button_right = 0x7f05008f;
 		public static final int dialog = 0x7f05000e;
-		public static final int layout_addview = 0x7f050080;
-		public static final int message = 0x7f050081;
-		public static final int msg_btn_divider = 0x7f050082;
+		public static final int layout_addview = 0x7f050087;
+		public static final int message = 0x7f050088;
+		public static final int msg_btn_divider = 0x7f050089;
 		public static final int title = 0x7f050034;
-		public static final int title_msg_divider = 0x7f05007f;
+		public static final int title_msg_divider = 0x7f050086;
 		public static final int titlebar = 0x7f050062;
 	}
 	public static final class layout {
-		public static final int fynn_prompt_dialog_normal = 0x7f030028;
-		public static final int fynn_prompt_dialog_titlebar = 0x7f030029;
-		public static final int fynn_prompt_dialog_titlebar_skyblue = 0x7f03002a;
+		public static final int fynn_prompt_dialog_normal = 0x7f03002a;
+		public static final int fynn_prompt_dialog_titlebar = 0x7f03002b;
+		public static final int fynn_prompt_dialog_titlebar_skyblue = 0x7f03002c;
 	}
 	public static final class style {
 		public static final int AppBaseTheme = 0x7f0b0083;

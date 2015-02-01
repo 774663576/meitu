@@ -2,6 +2,7 @@ package com.meitu.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.meitu.R;
 import com.meitu.Interface.ConfirmDialog;
+import com.meitu.service.UpdateService;
 
 import fynn.app.PromptDialog;
 
@@ -92,32 +94,32 @@ public class DialogUtil {
 	 * @param versionCode
 	 * @param link
 	 */
-	// public static void newVewsionDialog(final Context context,
-	// String versionCode, final String link) {
-	// PromptDialog.Builder dialog = new PromptDialog.Builder(context);
-	// dialog.setTitle("新版本提示");
-	// dialog.setViewStyle(PromptDialog.VIEW_STYLE_TITLEBAR);
-	// dialog.setMessage(versionCode);
-	// dialog.setMessageGravityIsCenter(true);
-	// dialog.setButton1("立即下载", new PromptDialog.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(Dialog dialog, int which) {
-	// dialog.dismiss();
-	// Intent intent = new Intent();
-	// intent.setClass(context, UpdateService.class);
-	// intent.putExtra("url", link);
-	// context.startService(intent);
-	// }
-	// });
-	// dialog.setButton2("暂不下载", new PromptDialog.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(Dialog dialog, int which) {
-	// dialog.dismiss();
-	// }
-	// });
-	// dialog.show();
-	// }
+	public static void newVewsionDialog(final Context context,
+			String versionCode, final String link) {
+		PromptDialog.Builder dialog = new PromptDialog.Builder(context);
+		dialog.setTitle("新版本提示");
+		dialog.setViewStyle(PromptDialog.VIEW_STYLE_TITLEBAR);
+		dialog.setMessage(versionCode);
+		dialog.setMessageGravityIsCenter(true);
+		dialog.setButton1("立即下载", new PromptDialog.OnClickListener() {
+
+			@Override
+			public void onClick(Dialog dialog, int which) {
+				dialog.dismiss();
+				Intent intent = new Intent();
+				intent.setClass(context, UpdateService.class);
+				intent.putExtra("url", link);
+				context.startService(intent);
+			}
+		});
+		dialog.setButton2("暂不下载", new PromptDialog.OnClickListener() {
+
+			@Override
+			public void onClick(Dialog dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
 
 }

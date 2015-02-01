@@ -15,12 +15,12 @@ public class Praise extends AbstractData {
 		return "user_id:" + user_id + "  article_id" + article_id;
 	}
 
-	public int getGrowth_id() {
+	public int getArticle_id() {
 		return article_id;
 	}
 
-	public void setGrowth_id(int growth_id) {
-		this.article_id = growth_id;
+	public void setArticle_id(int article_id) {
+		this.article_id = article_id;
 	}
 
 	public String getUser_avatar() {

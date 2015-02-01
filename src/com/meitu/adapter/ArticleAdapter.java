@@ -17,13 +17,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meitu.ArticleCommentActivity;
 import com.meitu.R;
+import com.meitu.Interface.AbstractTaskPostCallBack;
+import com.meitu.Interface.OnAvatarClick;
+import com.meitu.data.AbstractData.Status;
 import com.meitu.data.Article;
 import com.meitu.data.ArticleImage;
+import com.meitu.data.Praise;
+import com.meitu.data.enums.RetError;
+import com.meitu.db.DBUtils;
 import com.meitu.showbigpic.ImagePagerActivity;
+import com.meitu.task.CancelPraiseTask;
+import com.meitu.task.PraiseTask;
 import com.meitu.utils.Constants;
+import com.meitu.utils.SharedUtils;
+import com.meitu.utils.ToastUtil;
 import com.meitu.utils.UniversalImageLoadTool;
 import com.meitu.utils.Utils;
 import com.meitu.view.ExpandGridView;
@@ -152,6 +163,9 @@ public class ArticleAdapter extends BaseAdapter {
 		holder.txt_user_name.setText(article.getPublisher_name());
 		holder.img.setOnClickListener(new Onclick(position));
 		holder.btn_comment.setOnClickListener(new Onclick(position));
+		holder.btn_praise.setOnClickListener(new Onclick(position));
+		holder.img_avatar.setOnClickListener(new OnAvatarClick(article
+				.getPublisher_avatar(), article.getPublisher_id(), mContext));
 		return contentView;
 	}
 
@@ -164,10 +178,10 @@ public class ArticleAdapter extends BaseAdapter {
 
 		@Override
 		public void onClick(View v) {
-			// if (lists.get(position).isUploading()) {
-			// ToastUtil.showToast("动态正在发布中,请稍候...", Toast.LENGTH_SHORT);
-			// return;
-			// }
+			if (lists.get(position).isUploading()) {
+				ToastUtil.showToast("正在发布中,请稍候...");
+				return;
+			}
 			switch (v.getId()) {
 			case R.id.btn_comment:
 				Intent intent = new Intent();
@@ -178,15 +192,15 @@ public class ArticleAdapter extends BaseAdapter {
 				Utils.leftOutRightIn(mContext);
 				break;
 			case R.id.btn_prise:
-				// if (isTasking) {
-				// return;
-				// }
-				// Growth growth = lists.get(position);
-				// if (!growth.isPraise()) {
-				// praise(growth, (TextView) v);
-				// } else {
-				// cancelPraise(growth, (TextView) v);
-				// }
+				if (isTasking) {
+					return;
+				}
+				Article article = lists.get(position);
+				if (!article.isPraise()) {
+					praise(article, (TextView) v);
+				} else {
+					cancelPraise(article, (TextView) v);
+				}
 				break;
 			default:
 				intentImagePager(position, 1);
@@ -194,6 +208,70 @@ public class ArticleAdapter extends BaseAdapter {
 			}
 
 		}
+	}
+
+	private void cancelPraise(final Article article, final TextView v) {
+		isTasking = true;
+		Drawable drawable = mContext.getResources().getDrawable(
+				R.drawable.praise_img_nomal);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+				drawable.getMinimumHeight());
+		v.setCompoundDrawables(drawable, null, null, null);
+		int count = article.getPraise_count() - 1;
+		if (count > 0) {
+			v.setText("赞(" + (article.getPraise_count() - 1) + ")");
+		} else {
+			v.setText("赞 ");
+
+		}
+		CancelPraiseTask task = new CancelPraiseTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				isTasking = false;
+				if (result == RetError.NONE) {
+					for (Praise pr : article.getPraises()) {
+						if (pr.getUser_id() == SharedUtils.getIntUid()) {
+							pr.setStatus(Status.DEL);
+							pr.write(DBUtils.getDBsa(2));
+							Utils.print("res:::::::::::::====" + pr);
+							article.getPraises().remove(pr);
+							break;
+						}
+					}
+				}
+			}
+		});
+		task.executeParallel(article);
+	}
+
+	private void praise(final Article article, TextView v) {
+		isTasking = true;
+		Drawable drawable = mContext.getResources().getDrawable(
+				R.drawable.praise_img_focus);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+				drawable.getMinimumHeight());
+		v.setCompoundDrawables(drawable, null, null, null);
+		int count = article.getPraise_count() + 1;
+		v.setText("赞(" + (count) + ")");
+		PraiseTask task = new PraiseTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				isTasking = false;
+				if (result == RetError.NONE) {
+					Praise pr = new Praise();
+					pr.setArticle_id(article.getArticle_id());
+					pr.setUser_avatar(SharedUtils.getAPPUserAvatar());
+					pr.setUser_id(SharedUtils.getIntUid());
+					pr.write(DBUtils.getDBsa(2));
+					article.getPraises().add(pr);
+
+				}
+
+			}
+		});
+		task.executeParallel(article);
 	}
 
 	class GridViewOnItemClick implements OnItemClickListener {

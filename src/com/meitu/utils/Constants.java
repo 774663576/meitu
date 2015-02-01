@@ -10,4 +10,8 @@ public class Constants {
 	public static final String STATE_POSITION = "STATE_POSITION";
 	public static final String EXTRA_IMAGE_INDEX = "image_index";
 	public static final String EXTRA_IMAGE_URLS = "image_urls";
+
+	public static final String COMMENT_ARTICLE = "com.meitu.comment_article";
+	public static final String DEL_COMMENT = "com.meitu.delcomment";
+
 }

@@ -70,7 +70,8 @@ public class CommentAdapter extends BaseAdapter {
 				list.get(position).getPublisher_avatar(),
 				holder.img_user_avatar, R.drawable.picture_default_head);
 		holder.img_user_avatar.setOnClickListener(new OnAvatarClick(list.get(
-				position).getPublisher_id(), mContext));
+				position).getPublisher_avatar(), list.get(position)
+				.getPublisher_id(), mContext));
 		String content = comment.getComment_content();
 		if (!"".equals(comment.getReply_someone_name())
 				&& comment.getReply_someone_id() != 0) {
