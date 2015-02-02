@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.meitu.Interface.AbstractTaskPostCallBack;
 import com.meitu.adapter.ArticleImgAdapter;
 import com.meitu.adapter.CommentAdapter;
+import com.meitu.adapter.PraiseAdapter;
 import com.meitu.data.Article;
 import com.meitu.data.ArticleImage;
 import com.meitu.data.Comment;
@@ -31,6 +32,7 @@ import com.meitu.data.enums.RetError;
 import com.meitu.popwindow.CommentPopwindow;
 import com.meitu.popwindow.CommentPopwindow.OnCommentOnClick;
 import com.meitu.showbigpic.ImagePagerActivity;
+import com.meitu.task.DeleteCommentTask;
 import com.meitu.task.SendCommentTask;
 import com.meitu.utils.Constants;
 import com.meitu.utils.DateUtils;
@@ -74,7 +76,7 @@ public class ArticleCommentActivity extends BaseActivity implements
 
 	private LinearLayout parise_layout;
 	private HorizontalListView praise_listView;
-	// private PraiseAdapter praiseAdapter;
+	private PraiseAdapter praiseAdapter;
 	private LinearLayout comment_layout;
 
 	private RelativeLayout layout_title;
@@ -160,47 +162,15 @@ public class ArticleCommentActivity extends BaseActivity implements
 		adapter = new CommentAdapter(this, comments);
 		mListView.setAdapter(adapter);
 		viewLineVisible();
-		// praiseAdapter = new PraiseAdapter(this, article.getPraises());
-		// if (Article.getPraises().size() > 0) {
-		// parise_layout.setVisibility(View.VISIBLE);
-		// praise_listView.setAdapter(praiseAdapter);
-		// } else {
-		// parise_layout.setVisibility(View.GONE);
-		//
-		// }
+		praiseAdapter = new PraiseAdapter(this, article.getPraises());
+		if (article.getPraises().size() > 0) {
+			parise_layout.setVisibility(View.VISIBLE);
+			praise_listView.setAdapter(praiseAdapter);
+		} else {
+			parise_layout.setVisibility(View.GONE);
 
-	}
+		}
 
-	private void praise() {
-		// isTasking = true;
-		// Drawable drawable = getResources().getDrawable(
-		// R.drawable.praise_img_focus);
-		// drawable.setBounds(0, 0, drawable.getMinimumWidth(),
-		// drawable.getMinimumHeight());
-		// btn_praise.setCompoundDrawables(drawable, null, null, null);
-		// btn_praise.setText("‘ﬁ(" + (Article.getPraise_count() + 1) + ")");
-		// Praise praise = new Praise();
-		// praise.setArticle_id(Article.getArticle_id());
-		// praise.setUser_avatar(SharedUtils.getAPPUserAvatar());
-		// praise.setUser_id(SharedUtils.getIntUid());
-		// praise.write(DBUtils.getDBsa(2));
-		// Article.getPraises().add(praise);
-		// praiseAdapter.notifyDataSetChanged();
-		// PraiseArticleTask task = new PraiseArticleTask();
-		// task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
-		// @Override
-		// public void taskFinish(RetError result) {
-		// isTasking = false;
-		// if (result == RetError.NONE) {
-		// Intent intent = new Intent();
-		// intent.putExtra("Article_id", Article.getArticle_id());
-		// intent.setAction(Constants.COMMENT_PRAISE);
-		// sendBroadcast(intent);
-		// }
-		//
-		// }
-		// });
-		// task.executeParallel(Article);
 	}
 
 	class GridViewOnItemClick implements OnItemClickListener {
@@ -283,11 +253,11 @@ public class ArticleCommentActivity extends BaseActivity implements
 				adapter.notifyDataSetChanged();
 				viewLineVisible();
 				System.out.println("size::::::::;" + comments.size());
-				// Intent intent = new Intent();
-				// intent.putExtra("position", position);
-				// intent.putExtra("comment", comment);
-				// intent.setAction(Constants.COMMENT_Article);
-				// sendBroadcast(intent);
+				Intent intent = new Intent();
+				intent.putExtra("position", position);
+				intent.putExtra("comment", comment);
+				intent.setAction(Constants.COMMENT_ARTICLE);
+				sendBroadcast(intent);
 			}
 		});
 		task.executeParallel(comment);
@@ -345,29 +315,29 @@ public class ArticleCommentActivity extends BaseActivity implements
 	}
 
 	private void del(final int position) {
-		// final Dialog dialog = DialogUtil.createLoadingDialog(this, "«Î…‘∫Ú");
-		// dialog.show();
-		// final Comment comment = comments.get(position);
-		// DeleteCommentTask task = new DeleteCommentTask();
-		// task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
-		// @Override
-		// public void taskFinish(RetError result) {
-		// if (dialog != null) {
-		// dialog.dismiss();
-		// }
-		// if (result != RetError.NONE) {
-		// return;
-		// }
-		// sendBroadcast(new Intent(Constants.DEL_COMMENT).putExtra(
-		// "Article_id", Article.getArticle_id()).putExtra(
-		// "comment_id", comment.getComment_id()));
-		// comments.remove(position);
-		// adapter.notifyDataSetChanged();
-		// viewLineVisible();
-		//
-		// }
-		// });
-		// task.executeParallel(comment);
+		final Dialog dialog = DialogUtil.createLoadingDialog(this, "«Î…‘∫Ú");
+		dialog.show();
+		final Comment comment = comments.get(position);
+		DeleteCommentTask task = new DeleteCommentTask();
+		task.setmCallBack(new AbstractTaskPostCallBack<RetError>() {
+			@Override
+			public void taskFinish(RetError result) {
+				if (dialog != null) {
+					dialog.dismiss();
+				}
+				if (result != RetError.NONE) {
+					return;
+				}
+				sendBroadcast(new Intent(Constants.DEL_COMMENT).putExtra(
+						"article_id", article.getArticle_id()).putExtra(
+						"comment_id", comment.getComment_id()));
+				comments.remove(position);
+				adapter.notifyDataSetChanged();
+				viewLineVisible();
+
+			}
+		});
+		task.executeParallel(comment);
 	}
 
 	private void reply(int position) {

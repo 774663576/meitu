@@ -77,7 +77,7 @@
         android:background="@color/bg_line" />
 
     <TextView
-        android:id="@+id/txt_seting"
+        android:id="@+id/txt_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/left_menu"
@@ -87,7 +87,47 @@
         android:paddingLeft="30dip"
         android:paddingRight="10dip"
         android:paddingTop="15dip"
-        android:text="设置"
+        android:text="私信"
+        android:textColor="@color/txt_color"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dip"
+        android:background="@color/bg_line" />
+
+    <TextView
+        android:id="@+id/txt_new_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/left_menu"
+        android:drawablePadding="5dip"
+        android:gravity="center_vertical"
+        android:paddingBottom="15dip"
+        android:paddingLeft="30dip"
+        android:paddingRight="10dip"
+        android:paddingTop="15dip"
+        android:text="新版本"
+        android:textColor="@color/txt_color"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dip"
+        android:background="@color/bg_line" />
+
+    <TextView
+        android:id="@+id/txt_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/left_menu"
+        android:drawablePadding="5dip"
+        android:gravity="center_vertical"
+        android:paddingBottom="15dip"
+        android:paddingLeft="30dip"
+        android:paddingRight="10dip"
+        android:paddingTop="15dip"
+        android:text="退出"
         android:textColor="@color/txt_color"
         android:textSize="15sp" />
 

@@ -14,13 +14,18 @@ import com.meitu.data.enums.RetError;
 import com.meitu.data.enums.RetStatus;
 import com.meitu.data.result.ApiRequest;
 import com.meitu.data.result.Result;
+import com.meitu.data.result.StringResult;
 import com.meitu.db.Const;
 import com.meitu.parser.IParser;
+import com.meitu.parser.StringParser;
 import com.meitu.parser.UploadArticleParser;
 import com.meitu.utils.BitmapUtils;
+import com.meitu.utils.SharedUtils;
 
 public class Article extends AbstractData {
 	private static final String UPLOAD_ARTICLE_API = "/addarticle.do";
+	private static final String PRAISE_GROWTH_API = "/articleparise.do";
+	private static final String CANCEL_PRAISE_GROWTH_API = "/canclepraise.do";
 	private int article_id = 0;// 成长id
 	private int publisher_id = 0;// 发布者id
 	private String content = "";// 内容
@@ -149,21 +154,21 @@ public class Article extends AbstractData {
 		this.praises = praises;
 	}
 
-	// public RetError praiseGrowth() {
-	// IParser parser = new StringParser("praise_count");
-	// Map<String, Object> params = new HashMap<String, Object>();
-	// params.put("article_id", article_id);
-	// params.put("publisher_id", publisher_id);
-	// params.put("user_name", SharedUtils.getAPPUserName());
-	// Result ret = ApiRequest.request(PRAISE_GROWTH_API, params, parser);
-	// if (ret.getStatus() == RetStatus.SUCC) {
-	// StringResult sr = (StringResult) ret;
-	// this.praise_count = Integer.valueOf(sr.getStr());
-	// return RetError.NONE;
-	// } else {
-	// return ret.getErr();
-	// }
-	// }
+	public RetError praise() {
+		IParser parser = new StringParser("praise_count");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("article_id", article_id);
+		params.put("publisher_id", publisher_id);
+		params.put("user_name", SharedUtils.getAPPUserName());
+		Result ret = ApiRequest.request(PRAISE_GROWTH_API, params, parser);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			StringResult sr = (StringResult) ret;
+			this.praise_count = Integer.valueOf(sr.getStr());
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
+	}
 
 	// public RetError getGrowthByGrwothID() {
 	// IParser parser = new GrowthPaser();
@@ -192,20 +197,20 @@ public class Article extends AbstractData {
 	// }
 	// }
 
-	// public RetError cancelpraiseGrowth() {
-	// IParser parser = new StringParser("praise_count");
-	// Map<String, Object> params = new HashMap<String, Object>();
-	// params.put("growth_id", growth_id);
-	// Result ret = ApiRequest.request(CANCEL_PRAISE_GROWTH_API, params,
-	// parser);
-	// if (ret.getStatus() == RetStatus.SUCC) {
-	// StringResult sr = (StringResult) ret;
-	// this.praise_count = Integer.valueOf(sr.getStr());
-	// return RetError.NONE;
-	// } else {
-	// return ret.getErr();
-	// }
-	// }
+	public RetError cancelpraise() {
+		IParser parser = new StringParser("praise_count");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("article_id", article_id);
+		Result ret = ApiRequest.request(CANCEL_PRAISE_GROWTH_API, params,
+				parser);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			StringResult sr = (StringResult) ret;
+			this.praise_count = Integer.valueOf(sr.getStr());
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
+	}
 
 	public RetError uploadForAdd() {
 		List<File> bytesimg = new ArrayList<File>();

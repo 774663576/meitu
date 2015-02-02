@@ -66,11 +66,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:lineSpacingExtra="4dip"
                 android:paddingBottom="10dp"
                 android:paddingTop="8dip"
                 android:text="无病呻吟"
                 android:textColor="#666666"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/img"
@@ -134,7 +135,7 @@
                     android:paddingBottom="8dip"
                     android:paddingTop="8dip"
                     android:text="分享"
-                   android:textColor="@color/gray"
+                    android:textColor="@color/gray"
                     android:textSize="12sp" />
 
                 <View

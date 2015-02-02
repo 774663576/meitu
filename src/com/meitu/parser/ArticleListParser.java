@@ -12,6 +12,7 @@ import com.meitu.data.Article;
 import com.meitu.data.ArticleImage;
 import com.meitu.data.ArticleList;
 import com.meitu.data.Comment;
+import com.meitu.data.Praise;
 import com.meitu.data.result.Result;
 import com.meitu.utils.SharedUtils;
 
@@ -81,6 +82,7 @@ public class ArticleListParser implements IParser {
 				comments.add(comment);
 			}
 			sortComment(comments);
+<<<<<<< HEAD
 			// JSONArray jsonPraise = obj.getJSONArray("praises");
 			// List<Praise> praises = new ArrayList<Praise>();
 			// for (int k = 0; k < jsonPraise.length(); k++) {
@@ -93,20 +95,34 @@ public class ArticleListParser implements IParser {
 			// praise.setGrowth_id(growth_id);
 			// praises.add(praise);
 			// }
+=======
+			JSONArray jsonPraise = obj.getJSONArray("praises");
+			List<Praise> praises = new ArrayList<Praise>();
+			for (int k = 0; k < jsonPraise.length(); k++) {
+				JSONObject obj2 = (JSONObject) jsonPraise.opt(k);
+				int user_id = obj2.getInt("user_id");
+				String user_avatar = obj2.getString("user_avatar");
+				Praise praise = new Praise();
+				praise.setUser_avatar(user_avatar);
+				praise.setUser_id(user_id);
+				praise.setArticle_id(article_id);
+				praises.add(praise);
+			}
+>>>>>>> 22a3b7a07d3ace935c4bc0b848969f1b65c59187
 
 			Article article = new Article();
 			article.setContent(content);
 			article.setArticle_id(article_id);
 			article.setImages(images);
-			// growth.setComments(comments);
+			article.setComments(comments);
 			article.setPublished(published);
 			article.setPublisher_id(publisher);
 			article.setPublisher_avatar(publisher_avatar);
 			article.setPublisher_name(publisher_name);
-			// growth.setPraise(isPraise > 0);
-			// growth.setPraise_count(praise_count);
-			// growth.setPraises(praises);
-			// growth.setStatus(AbstractData.convert(state));
+			article.setPraise(isPraise > 0);
+			article.setPraise_count(praise_count);
+			article.setPraises(praises);
+			// article.setStatus(AbstractData.convert(state));
 			article.setLast_update_time(last_update_time);
 			articles.add(article);
 

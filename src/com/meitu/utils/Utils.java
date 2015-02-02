@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.meitu.MyApplation;
 import com.meitu.R;
+import com.meitu.db.DataBaseHelper;
 
 public class Utils {
 
@@ -183,5 +184,11 @@ public class Utils {
 		} else {
 			return false;
 		}
+	}
+
+	/** * 按名字清除本应用数据库 * * @param context * @param dbName */
+	public static void cleanDatabaseByName(Context context) {
+		context.deleteDatabase(DataBaseHelper.DATABASE_NAME
+				+ SharedUtils.getUid());
 	}
 }
