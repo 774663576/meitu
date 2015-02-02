@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.meitu.view.PullDownView
-        android:id="@+id/PullDownlistView"
+    <com.meitu.view.ScrollViewWithListView
+        android:id="@+id/listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="none" >
-    </com.meitu.view.PullDownView>
+    </com.meitu.view.ScrollViewWithListView>
 
 </LinearLayout>

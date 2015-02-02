@@ -26,6 +26,7 @@ public class ArticleList extends AbstractData {
 	private static final long serialVersionUID = 1L;
 
 	private final String ARTICLE_LIST_API = "/articles.do";
+	private final String GET_ARTICLES_BY_USER_ID = "/getarticlesbyid.do";
 	private final int ARTICLE_COUNT = 20;
 
 	private List<Article> articles = new ArrayList<Article>();
@@ -84,6 +85,23 @@ public class ArticleList extends AbstractData {
 			}
 		});
 
+	}
+
+	public RetError getArticlesByUserID(int uid, String refushTime) {
+		articles.clear();
+		IParser parser = new ArticleListParser();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("refushTime", refushTime);
+		params.put("uid", uid);
+		Result ret = ApiRequest
+				.request(GET_ARTICLES_BY_USER_ID, params, parser);
+		if (ret.getStatus() == RetStatus.SUCC) {
+			ArticleList lists = (ArticleList) ret.getData();
+			articles.addAll(lists.getArticles());
+			return RetError.NONE;
+		} else {
+			return ret.getErr();
+		}
 	}
 
 	public RetError refushArticles() {
