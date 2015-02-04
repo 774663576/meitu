@@ -1,6 +1,11 @@
 package com.meitu;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,9 +15,13 @@ import android.widget.TextView;
 import com.meitu.Interface.AbstractTaskPostCallBack;
 import com.meitu.data.User;
 import com.meitu.data.enums.RetError;
+import com.meitu.showbigpic.ImagePagerActivity;
 import com.meitu.task.GetUserInfoTask;
+import com.meitu.utils.Constants;
 import com.meitu.utils.DialogUtil;
+import com.meitu.utils.SharedUtils;
 import com.meitu.utils.UniversalImageLoadTool;
+import com.meitu.utils.Utils;
 import com.meitu.view.DampView;
 
 public class UserInfoActivity extends BaseActivity {
@@ -59,7 +68,26 @@ public class UserInfoActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View arg0) {
+				startActivity(new Intent(UserInfoActivity.this,
+						UserArticlesActivity.class)
+						.putExtra("user_id", user_id));
+				Utils.leftOutRightIn(UserInfoActivity.this);
+			}
+		});
+		avatar.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				List<String> imgUrl = new ArrayList<String>();
+				imgUrl.add(avatar_path);
+				Intent intent = new Intent(UserInfoActivity.this,
+						ImagePagerActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(Constants.EXTRA_IMAGE_URLS,
+						(Serializable) imgUrl);
+				intent.putExtras(bundle);
+				intent.putExtra(Constants.EXTRA_IMAGE_INDEX, 1);
+				startActivity(intent);
 			}
 		});
 	}

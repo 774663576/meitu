@@ -85,6 +85,11 @@
             android:label="@string/title_activity_user_info"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.meitu.UserArticlesActivity"
+            android:label="@string/title_activity_user_articles"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

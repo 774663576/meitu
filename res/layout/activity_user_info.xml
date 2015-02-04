@@ -125,6 +125,7 @@
                 android:id="@+id/txt_dongtai"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+         android:background="@drawable/left_menu"
                 android:drawableRight="@drawable/icon_friend_right_arrow"
                 android:paddingBottom="13dip"
                 android:paddingLeft="10dip"

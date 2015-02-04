@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity implements DrawerListener,
 	}
 
 	private void setValue() {
-		adapter = new ArticleAdapter(this, lists);
+		adapter = new ArticleAdapter(this, lists, 0);
 		mListView.setAdapter(adapter);
 		mPullDownView.addFooterView();
 

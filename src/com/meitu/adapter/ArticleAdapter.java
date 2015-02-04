@@ -42,10 +42,12 @@ public class ArticleAdapter extends BaseAdapter {
 	private Context mContext;
 	private boolean isTasking = false;
 	private List<Article> lists = new ArrayList<Article>();
+	private int type;
 
-	public ArticleAdapter(Context context, List<Article> lists) {
+	public ArticleAdapter(Context context, List<Article> lists, int type) {
 		this.mContext = context;
 		this.lists = lists;
+		this.type = type;
 	}
 
 	@Override
@@ -163,8 +165,12 @@ public class ArticleAdapter extends BaseAdapter {
 		holder.img.setOnClickListener(new Onclick(position));
 		holder.btn_comment.setOnClickListener(new Onclick(position));
 		holder.btn_praise.setOnClickListener(new Onclick(position));
-		holder.img_avatar.setOnClickListener(new OnAvatarClick(article
-				.getPublisher_avatar(), article.getPublisher_id(), mContext));
+		if (type == 0) {
+			holder.img_avatar
+					.setOnClickListener(new OnAvatarClick(article
+							.getPublisher_avatar(), article.getPublisher_id(),
+							mContext));
+		}
 		return contentView;
 	}
 
