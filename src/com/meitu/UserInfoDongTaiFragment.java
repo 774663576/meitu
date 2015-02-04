@@ -3,10 +3,6 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import android.app.Dialog;
-//import android.view.View;
-//import android.widget.ListView;
-//
 //import com.meitu.Interface.AbstractTaskPostCallBack;
 //import com.meitu.adapter.ArticleAdapter;
 //import com.meitu.data.Article;
@@ -14,9 +10,16 @@
 //import com.meitu.data.enums.RetError;
 //import com.meitu.task.GetArticleByUserIDTask;
 //import com.meitu.utils.DialogUtil;
-//import com.meitu.utils.Utils;
 //
-//public class UserInfoDongTai extends UserInfo {
+//import android.app.Dialog;
+//import android.os.Bundle;
+//import android.support.v4.app.Fragment;
+//import android.view.LayoutInflater;
+//import android.view.View;
+//import android.view.ViewGroup;
+//import android.widget.ListView;
+//
+//public class UserInfoDongTaiFragment extends Fragment {
 //	private ListView mlistView;
 //
 //	private ArticleAdapter adapter;
@@ -27,29 +30,35 @@
 //
 //	private int uid;
 //
-//	public UserInfoDongTai(UserInfoActivity activity, View contentRootView) {
-//		super(activity, contentRootView);
-//		uid = activity.getUser_id();
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//			Bundle savedInstanceState) {
+//		return inflater.inflate(R.layout.dongtai_layout, null);
+//	}
+//
+//	@Override
+//	public void onActivityCreated(Bundle savedInstanceState) {
+//		super.onActivityCreated(savedInstanceState);
+//		initView();
 //		setValue();
-//		dialog = DialogUtil.createLoadingDialog(mContext);
-//		dialog.show();
-//		getArticleList(uid, "");
 //	}
 //
-//	@Override
 //	public void initView() {
-//		mlistView = (ListView) findViewById(R.id.listView);
+//		mlistView = (ListView) getView().findViewById(R.id.listView);
+//
 //	}
 //
-//	@Override
 //	public void setListener() {
 //
 //	}
 //
 //	private void setValue() {
-//		adapter = new ArticleAdapter(mContext, lists);
+//		uid = UserInfoActivity.getUser_id();
+//		dialog = DialogUtil.createLoadingDialog(getActivity());
+//		dialog.show();
+//		getArticleList(uid, "");
+//		adapter = new ArticleAdapter(getActivity(), lists);
 //		mlistView.setAdapter(adapter);
-//
 //	}
 //
 //	private void getArticleList(int uid, String refushTime) {
@@ -70,5 +79,4 @@
 //		});
 //		task.executeParallel(alist);
 //	}
-//
 //}
